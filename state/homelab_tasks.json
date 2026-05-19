@@ -118,6 +118,12 @@
           "title": "update-stack.sh validado en DRY_RUN",
           "status": "done",
           "priority": "high"
+        },
+        {
+          "id": "restauracion-backups-plan-v01",
+          "title": "Plan restauración backups v0.1 documentado",
+          "status": "done",
+          "priority": "high"
         }
       ]
     },
@@ -188,6 +194,24 @@
         {
           "id": "backups-restauracion-probada",
           "title": "Probar restauración de backups",
+          "status": "pending",
+          "priority": "high"
+        },
+        {
+          "id": "backups-inspeccion-segura-recientes",
+          "title": "Ejecutar inspección segura de backups recientes",
+          "status": "pending",
+          "priority": "high"
+        },
+        {
+          "id": "restore-mariadb-temporal",
+          "title": "Restaurar MariaDB en entorno temporal",
+          "status": "pending",
+          "priority": "high"
+        },
+        {
+          "id": "restore-uptime-kuma-temporal",
+          "title": "Extraer backup Uptime Kuma en entorno temporal",
           "status": "pending",
           "priority": "high"
         },
