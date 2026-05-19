@@ -723,7 +723,8 @@ h2 {
 
 .resource-list,
 .service-list,
-.pending-list {
+.pending-list,
+.manuals-list {
     list-style: none;
     margin: 14px 0 0;
     padding: 0;
@@ -740,7 +741,8 @@ h2 {
 
 .resource-list li:last-child,
 .service-list li:last-child,
-.pending-list li:last-child {
+.pending-list li:last-child,
+.manuals-list li:last-child {
     border-bottom: 0;
 }
 
@@ -766,7 +768,8 @@ h2 {
 }
 
 .service-list li,
-.pending-list li {
+.pending-list li,
+.manuals-list li {
     min-height: 48px;
     padding: 10px 0;
     border-bottom: 1px solid rgba(118, 186, 255, 0.12);
@@ -774,6 +777,11 @@ h2 {
 }
 
 .service-list div {
+    min-width: 0;
+    flex: 1 1 auto;
+}
+
+.manuals-list div {
     min-width: 0;
     flex: 1 1 auto;
 }
@@ -802,7 +810,8 @@ h2 {
 }
 
 .service-list div span,
-.pending-list span:first-child {
+.pending-list span:first-child,
+.manuals-list div span {
     display: block;
     color: var(--muted);
     font-size: 0.68rem;
@@ -815,7 +824,12 @@ h2 {
     margin-top: 3px;
 }
 
+.manuals-list div span {
+    margin-top: 3px;
+}
+
 .service-list strong,
+.manuals-list strong,
 .service-link,
 .metric-list strong,
 .resource-note {
@@ -876,6 +890,66 @@ h2 {
     color: var(--amber);
     font-size: 0.68rem;
     line-height: 1.35;
+}
+
+.manuals-panel {
+    display: flex;
+    flex-direction: column;
+    max-height: min(38vh, 300px);
+}
+
+.manuals-panel .panel-heading {
+    flex: 0 0 auto;
+    align-items: center;
+}
+
+.manuals-panel .panel-heading strong {
+    flex: 0 0 auto;
+    padding: 5px 8px;
+    border: 1px solid rgba(23, 240, 143, 0.22);
+    border-radius: 999px;
+    background: rgba(23, 240, 143, 0.07);
+    text-align: right;
+    white-space: nowrap;
+}
+
+.manuals-note,
+.manuals-error {
+    margin: 10px 0 0;
+    color: var(--muted);
+    font-size: 0.68rem;
+    line-height: 1.4;
+}
+
+.manuals-error {
+    color: var(--amber);
+}
+
+.manuals-panel .manuals-list {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+    padding-right: 6px;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(36, 194, 255, 0.45) rgba(3, 14, 27, 0.4);
+}
+
+.manuals-panel .manuals-list::-webkit-scrollbar {
+    width: 8px;
+}
+
+.manuals-panel .manuals-list::-webkit-scrollbar-track {
+    background: rgba(3, 14, 27, 0.4);
+    border-radius: 8px;
+}
+
+.manuals-panel .manuals-list::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, rgba(36, 194, 255, 0.6), rgba(11, 146, 255, 0.6));
+    border-radius: 8px;
+    border: 1px solid rgba(4, 18, 34, 0.7);
 }
 
 .pending-panel .pending-list {
@@ -1109,7 +1183,8 @@ h2 {
     }
 
     .service-list li,
-    .pending-list li {
+    .pending-list li,
+    .manuals-list li {
         min-height: 42px;
         padding: 8px 0;
     }
@@ -1455,7 +1530,8 @@ h2 {
     }
 
     .service-list li,
-    .pending-list li {
+    .pending-list li,
+    .manuals-list li {
         align-items: flex-start;
         gap: 8px;
     }
@@ -1468,12 +1544,17 @@ h2 {
         max-height: min(46vh, 320px);
     }
 
+    .manuals-panel {
+        max-height: min(42vh, 300px);
+    }
+
     .service-list strong {
         font-size: 0.74rem;
     }
 
     .service-list div span,
     .pending-list span:first-child,
+    .manuals-list div span,
     .resource-note {
         font-size: 0.64rem;
     }

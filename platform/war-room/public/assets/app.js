@@ -6,7 +6,8 @@
         services: '/api/v1/services.php',
         resources: '/api/v1/resources.php',
         containers: '/api/v1/containers.php',
-        tasks: '/api/v1/tasks.php'
+        tasks: '/api/v1/tasks.php',
+        manuals: '/api/v1/manuals.php'
     };
 
     var timers = {};
@@ -15,7 +16,8 @@
         services: false,
         resources: false,
         containers: false,
-        tasks: false
+        tasks: false,
+        manuals: false
     };
 
     var failures = {
@@ -23,7 +25,8 @@
         services: 0,
         resources: 0,
         containers: 0,
-        tasks: 0
+        tasks: 0,
+        manuals: 0
     };
 
     var lastStatusUpdateIso = null;
@@ -119,6 +122,8 @@
                 pollContainers();
             } else if (name === 'tasks') {
                 pollTasks();
+            } else if (name === 'manuals') {
+                pollManuals();
             }
         }, nextDelay);
     }
@@ -162,6 +167,13 @@
         }
     }
 
+    function showManualsError(show) {
+        var node = select('[data-manuals-error]');
+        if (node) {
+            node.hidden = !show;
+        }
+    }
+
     function renderTasks(payload) {
         var list = select('[data-pending-list]');
         if (!list || !payload || !Array.isArray(payload.blocks)) {
@@ -197,6 +209,53 @@
                 list.appendChild(li);
             });
         });
+    }
+
+    function renderManuals(payload) {
+        var list = select('[data-manuals-list]');
+        if (!list || !payload || !Array.isArray(payload.items)) {
+            throw new Error('Invalid manuals payload');
+        }
+
+        list.textContent = '';
+
+        payload.items.forEach(function (manual) {
+            var li = document.createElement('li');
+            var wrapper = document.createElement('div');
+            var title = document.createElement('strong');
+            var summary = document.createElement('span');
+            var badge = document.createElement('span');
+
+            title.textContent = manual.title || manual.id || 'Manual';
+            summary.textContent = manual.summary || 'Documento saneado de consulta.';
+            badge.className = 'badge ' + (manual.available ? 'badge-local' : 'badge-pending');
+            badge.textContent = manual.available ? 'DISPONIBLE' : 'PENDIENTE';
+
+            wrapper.appendChild(title);
+            wrapper.appendChild(summary);
+            li.appendChild(wrapper);
+            li.appendChild(badge);
+            list.appendChild(li);
+        });
+
+        var stateLabel = 'Read-only';
+        if (payload.state === 'available') {
+            stateLabel = 'Disponible';
+        } else if (payload.state === 'partial') {
+            stateLabel = 'Parcial';
+        } else if (payload.state === 'unavailable') {
+            stateLabel = 'Pendiente';
+        }
+
+        setText('[data-manuals-state]', stateLabel);
+
+        if (payload.manuals_available === true) {
+            setText('[data-manuals-note]', 'Catálogo documental saneado disponible en modo solo lectura.');
+        } else if (payload.reason === 'manuals_not_mounted') {
+            setText('[data-manuals-note]', 'Catálogo preparado. Montaje de manuales pendiente en el contenedor.');
+        } else {
+            setText('[data-manuals-note]', 'Catálogo preparado. Algunos manuales aún no están disponibles.');
+        }
     }
 
     function renderClock() {
@@ -405,6 +464,32 @@
         });
     }
 
+    function pollManuals() {
+        if (inFlight.manuals) {
+            scheduleNext('manuals', 60000);
+            return;
+        }
+
+        inFlight.manuals = true;
+
+        fetchJson(endpoints.manuals, 2500).then(function (data) {
+            if (!data || data.ok !== true) {
+                throw new Error('Manuals API failed');
+            }
+
+            failures.manuals = 0;
+            showManualsError(false);
+            renderManuals(data.data);
+        }).catch(function () {
+            failures.manuals += 1;
+            showManualsError(true);
+            setText('[data-manuals-state]', 'Sin datos');
+        }).finally(function () {
+            inFlight.manuals = false;
+            scheduleNext('manuals', 60000);
+        });
+    }
+
     renderClock();
     setInterval(renderClock, 1000);
 
@@ -413,4 +498,5 @@
     pollResources();
     pollContainers();
     pollTasks();
+    pollManuals();
 })();

@@ -69,6 +69,7 @@ $navItems = [
     'Red',
     'Almacenamiento',
     'Monitoreo',
+    'Manuales',
     'Automatización',
     'Backups',
     'Configuración',
@@ -247,6 +248,24 @@ $systemStats = [
                 <ul class="pending-list" data-pending-list>
                     <li class="tasks-loading">
                         <span>Cargando checklist dinámica</span>
+                        <span class="badge badge-pending">PENDIENTE</span>
+                    </li>
+                </ul>
+            </section>
+
+            <section class="panel-card manuals-panel" data-manuals-panel>
+                <div class="panel-heading">
+                    <h2>Manuales</h2>
+                    <strong><span class="status-dot"></span> <span data-manuals-state>Read-only</span></strong>
+                </div>
+                <p class="manuals-note" data-manuals-note>Base documental segura preparada para consulta. Sin acciones operativas.</p>
+                <p class="manuals-error" data-manuals-error hidden>No se pudo cargar el catálogo de manuales</p>
+                <ul class="manuals-list" data-manuals-list>
+                    <li>
+                        <div>
+                            <strong>Cargando manuales</strong>
+                            <span>Consulta read-only del catálogo documental.</span>
+                        </div>
                         <span class="badge badge-pending">PENDIENTE</span>
                     </li>
                 </ul>
