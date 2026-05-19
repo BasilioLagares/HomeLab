@@ -1,5 +1,5 @@
 {
-  "version": "0.7",
+  "version": "0.8",
   "blocks": [
     {
       "id": "done",
@@ -70,6 +70,12 @@
           "title": "War Room base read-only",
           "status": "done",
           "priority": "high"
+        },
+        {
+          "id": "warroom-v08-operaciones-readonly",
+          "title": "War Room v0.8 Operaciones read-only",
+          "status": "done",
+          "priority": "high"
         }
       ]
     },
@@ -108,12 +114,6 @@
           "priority": "medium"
         },
         {
-          "id": "warroom-v08-operaciones-readonly",
-          "title": "War Room v0.8 Operaciones read-only",
-          "status": "pending",
-          "priority": "high"
-        },
-        {
           "id": "warroom-v09-operaciones-controladas",
           "title": "War Room v0.9 Operaciones controladas",
           "status": "pending",
@@ -129,6 +129,12 @@
           "id": "ia-interna-copiloto",
           "title": "IA interna / copiloto HomeLab",
           "status": "later",
+          "priority": "medium"
+        },
+        {
+          "id": "ampliar-manuales-operativos",
+          "title": "Ampliar docs/manuals con manuales operativos saneados",
+          "status": "pending",
           "priority": "medium"
         },
         {
