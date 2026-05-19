@@ -12,6 +12,17 @@ seguros, revisables y versionables sin incluir datos privados del entorno real.
   revisión antes de publicar cambios.
 - [Backups](backups.md): política general de copias, restauración conceptual y
   comprobaciones de integridad.
+- [Caddy y DNS](caddy-dns.md): reverse proxy interno, DNS interno y diagnóstico
+  seguro de acceso.
+- [WireGuard](wireguard.md): administración remota privada, VPN y advertencias
+  sobre claves y exposición pública.
+- [Backups y restauración](backups-restauracion.md): procedimientos saneados
+  para crear y restaurar copias.
+- [Recuperación de War Room](recuperacion-war-room.md): diagnóstico seguro si la
+  War Room no carga o sus APIs no responden.
+
+Todos los manuales de esta carpeta están pensados para consulta read-only desde
+la War Room. Deben mantenerse saneados y libres de configuración privada.
 
 ## Política de seguridad documental
 

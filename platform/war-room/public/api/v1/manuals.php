@@ -38,6 +38,26 @@ function allowedManuals(): array
             'summary' => 'Política general de copias, restauración conceptual e integridad.',
             'file' => 'backups.md',
         ],
+        'caddy-dns' => [
+            'title' => 'Caddy y DNS',
+            'summary' => 'Reverse proxy interno, DNS y diagnóstico seguro de acceso.',
+            'file' => 'caddy-dns.md',
+        ],
+        'wireguard' => [
+            'title' => 'WireGuard',
+            'summary' => 'VPN privada, administración remota y advertencias de exposición.',
+            'file' => 'wireguard.md',
+        ],
+        'backups-restauracion' => [
+            'title' => 'Backups y restauración',
+            'summary' => 'Política de copias, restauración conceptual e integridad.',
+            'file' => 'backups-restauracion.md',
+        ],
+        'recuperacion-war-room' => [
+            'title' => 'Recuperación de War Room',
+            'summary' => 'Diagnóstico seguro si War Room o sus APIs no cargan.',
+            'file' => 'recuperacion-war-room.md',
+        ],
     ];
 }
 
