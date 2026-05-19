@@ -148,6 +148,30 @@
           "title": "Probar restauración de backups",
           "status": "done",
           "priority": "high"
+        },
+        {
+          "id": "saneamiento-documental-docs-antiguos",
+          "title": "Saneamiento documental de docs antiguos sensibles",
+          "status": "done",
+          "priority": "high"
+        },
+        {
+          "id": "backups-configs-politica-saneada",
+          "title": "Política saneada de backups de configuración",
+          "status": "done",
+          "priority": "high"
+        },
+        {
+          "id": "caddy-dns-guia-saneada",
+          "title": "Guía saneada de Caddy y DNS interno",
+          "status": "done",
+          "priority": "high"
+        },
+        {
+          "id": "mantenimiento-basico-guia-saneada",
+          "title": "Guía saneada de mantenimiento básico",
+          "status": "done",
+          "priority": "high"
         }
       ]
     },
@@ -155,12 +179,6 @@
       "id": "pending",
       "title": "Pendientes",
       "items": [
-        {
-          "id": "sanear-docs-antiguos",
-          "title": "Revisar y sanear docs antiguos sensibles antes de versionarlos",
-          "status": "pending",
-          "priority": "high"
-        },
         {
           "id": "compose-real-warroom",
           "title": "Decidir tratamiento de platform/war-room/docker-compose.yml real",
@@ -212,6 +230,24 @@
         {
           "id": "wireguard-revision-final",
           "title": "WireGuard revisión final/acceso remoto robusto",
+          "status": "pending",
+          "priority": "high"
+        },
+        {
+          "id": "docs-antiguos-archivo-local",
+          "title": "Decidir si borrar o archivar localmente docs antiguos sensibles",
+          "status": "pending",
+          "priority": "medium"
+        },
+        {
+          "id": "wireguard-manual-saneado",
+          "title": "Crear manual WireGuard saneado si hace falta",
+          "status": "pending",
+          "priority": "medium"
+        },
+        {
+          "id": "revision-previa-push-remoto",
+          "title": "Revisar antes de cualquier push remoto futuro",
           "status": "pending",
           "priority": "high"
         },
