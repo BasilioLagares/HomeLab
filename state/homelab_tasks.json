@@ -76,6 +76,24 @@
           "title": "War Room v0.8 Operaciones read-only",
           "status": "done",
           "priority": "high"
+        },
+        {
+          "id": "scripts-operativos-examples",
+          "title": "Plantillas saneadas de scripts operativos",
+          "status": "done",
+          "priority": "high"
+        },
+        {
+          "id": "backup-mariadb-saneado",
+          "title": "Backup MariaDB saneado sin secretos hardcodeados",
+          "status": "done",
+          "priority": "high"
+        },
+        {
+          "id": "backup-mariadb-probado",
+          "title": "Backup MariaDB probado",
+          "status": "done",
+          "priority": "high"
         }
       ]
     },
@@ -104,6 +122,18 @@
         {
           "id": "revisar-scripts-operativos",
           "title": "Revisar scripts de backup/update antes de versionarlos",
+          "status": "pending",
+          "priority": "high"
+        },
+        {
+          "id": "sanear-backup-uptime-kuma",
+          "title": "Sanear backup-uptime-kuma.sh real",
+          "status": "pending",
+          "priority": "high"
+        },
+        {
+          "id": "sanear-update-stack",
+          "title": "Sanear update-stack.sh real",
           "status": "pending",
           "priority": "high"
         },
@@ -145,9 +175,15 @@
         },
         {
           "id": "backups-restauracion-probada",
-          "title": "Backups automáticos y restauración probada",
+          "title": "Probar restauración de backups",
           "status": "pending",
           "priority": "high"
+        },
+        {
+          "id": "rotacion-credencial-mariadb",
+          "title": "Valorar rotación credencial MariaDB si procede",
+          "status": "pending",
+          "priority": "medium"
         },
         {
           "id": "seguridad-global",
