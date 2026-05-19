@@ -172,6 +172,24 @@
           "title": "Guía saneada de mantenimiento básico",
           "status": "done",
           "priority": "high"
+        },
+        {
+          "id": "auditoria-pre-push-v01",
+          "title": "Auditoría pre-push v0.1",
+          "status": "done",
+          "priority": "high"
+        },
+        {
+          "id": "revision-archivos-trackeados-peligrosos",
+          "title": "Revisión de archivos trackeados peligrosos",
+          "status": "done",
+          "priority": "high"
+        },
+        {
+          "id": "confirmacion-ignorados-criticos",
+          "title": "Confirmación de ignorados críticos",
+          "status": "done",
+          "priority": "high"
         }
       ]
     },
@@ -250,6 +268,12 @@
           "title": "Revisar antes de cualquier push remoto futuro",
           "status": "pending",
           "priority": "high"
+        },
+        {
+          "id": "script-auditoria-pre-push",
+          "title": "Crear script de auditoría pre-push si compensa",
+          "status": "pending",
+          "priority": "medium"
         },
         {
           "id": "rotacion-credencial-mariadb",
