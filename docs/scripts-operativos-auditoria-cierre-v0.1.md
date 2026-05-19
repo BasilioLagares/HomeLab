@@ -43,10 +43,18 @@ Scripts revisados:
 
 `update-stack.sh`:
 
-- Auditado.
-- Pendiente de saneamiento o conversión definitiva a plantilla.
-- Ejecuta actualización real de stack, por lo que debe tratarse como operación
-  con impacto.
+- Saneado.
+- Versionado.
+- Usa `set -euo pipefail`.
+- Mantiene `DRY_RUN=1` por defecto.
+- Exige `CONFIRM_UPDATE` para operación real.
+- Mantiene `REQUIRE_BACKUP_CONFIRMATION` para exigir confirmación de backup
+  previo.
+- Valida stack, fichero compose y allowlist antes de operar.
+- No usa `docker compose down`.
+- Solo se validó en `DRY_RUN`.
+- La ejecución real de actualización queda pendiente para una ventana
+  controlada.
 
 ## Plantillas saneadas creadas
 
@@ -70,7 +78,7 @@ seguridad. No contienen valores reales ni secretos.
 - Usar `scripts/.secrets/` para secretos locales no versionados.
 - Mantener `DRY_RUN` por defecto en ejemplos.
 - No ejecutar operaciones de impacto sin validación previa.
-- Mantener los scripts reales con impacto fuera de Git hasta sanearlos.
+- Mantener operaciones reales de actualización para ventanas controladas.
 
 ## Validaciones realizadas
 
@@ -84,13 +92,19 @@ seguridad. No contienen valores reales ni secretos.
 - Confirmación de que Uptime Kuma volvió a arrancar.
 - Confirmación de que el backup Uptime Kuma quedó con usuario correcto y
   permisos restrictivos.
+- `bash -n` de `update-stack.sh`.
+- Prueba `DRY_RUN` de `update-stack.sh`.
+- Confirmación de que no se hizo `docker compose pull` real.
+- Confirmación de que no se hizo `docker compose up -d` real.
+- Confirmación de que no se usó `docker compose down`.
 - Confirmación de que backups y secretos locales no entran en Git.
 
 ## Pendientes
 
-- Sanear o convertir a example `update-stack.sh`.
 - Valorar rotación de credencial MariaDB si se considera necesario.
 - Probar restauración real de backup.
+- Ejecutar `update-stack.sh` en modo real solo en una ventana controlada si
+  algún día hace falta.
 - Documentar procedimiento final de restauración.
 
 ## Estado final
@@ -98,4 +112,5 @@ seguridad. No contienen valores reales ni secretos.
 El microbloque queda cerrado con plantillas saneadas versionables, backup de
 MariaDB saneado sin contraseña hardcodeada y backup de Uptime Kuma saneado con
 dry-run, confirmación y recuperación básica. El script de actualización de stack
-permanece pendiente.
+queda saneado y versionado con `DRY_RUN`, confirmaciones y validaciones previas;
+su ejecución real queda pendiente para una ventana controlada.

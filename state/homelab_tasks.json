@@ -106,6 +106,18 @@
           "title": "Backup Uptime Kuma probado",
           "status": "done",
           "priority": "high"
+        },
+        {
+          "id": "update-stack-saneado-dry-run",
+          "title": "update-stack.sh saneado con dry-run",
+          "status": "done",
+          "priority": "high"
+        },
+        {
+          "id": "update-stack-validado-dry-run",
+          "title": "update-stack.sh validado en DRY_RUN",
+          "status": "done",
+          "priority": "high"
         }
       ]
     },
@@ -134,12 +146,6 @@
         {
           "id": "revisar-scripts-operativos",
           "title": "Revisar scripts de backup/update antes de versionarlos",
-          "status": "pending",
-          "priority": "high"
-        },
-        {
-          "id": "sanear-update-stack",
-          "title": "Sanear update-stack.sh real",
           "status": "pending",
           "priority": "high"
         },
@@ -188,6 +194,12 @@
         {
           "id": "rotacion-credencial-mariadb",
           "title": "Valorar rotación credencial MariaDB si procede",
+          "status": "pending",
+          "priority": "medium"
+        },
+        {
+          "id": "update-stack-real-ventana-controlada",
+          "title": "Ejecutar update-stack real solo en ventana controlada si algún día hace falta",
           "status": "pending",
           "priority": "medium"
         },
