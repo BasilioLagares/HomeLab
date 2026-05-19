@@ -190,6 +190,12 @@
           "title": "Confirmación de ignorados críticos",
           "status": "done",
           "priority": "high"
+        },
+        {
+          "id": "docs-antiguos-archivo-local",
+          "title": "Archivar localmente docs antiguos sensibles",
+          "status": "done",
+          "priority": "medium"
         }
       ]
     },
@@ -250,12 +256,6 @@
           "title": "WireGuard revisión final/acceso remoto robusto",
           "status": "pending",
           "priority": "high"
-        },
-        {
-          "id": "docs-antiguos-archivo-local",
-          "title": "Decidir si borrar o archivar localmente docs antiguos sensibles",
-          "status": "pending",
-          "priority": "medium"
         },
         {
           "id": "wireguard-manual-saneado",
