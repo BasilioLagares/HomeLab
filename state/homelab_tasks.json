@@ -94,6 +94,18 @@
           "title": "Backup MariaDB probado",
           "status": "done",
           "priority": "high"
+        },
+        {
+          "id": "backup-uptime-kuma-saneado",
+          "title": "Backup Uptime Kuma saneado con dry-run",
+          "status": "done",
+          "priority": "high"
+        },
+        {
+          "id": "backup-uptime-kuma-probado",
+          "title": "Backup Uptime Kuma probado",
+          "status": "done",
+          "priority": "high"
         }
       ]
     },
@@ -122,12 +134,6 @@
         {
           "id": "revisar-scripts-operativos",
           "title": "Revisar scripts de backup/update antes de versionarlos",
-          "status": "pending",
-          "priority": "high"
-        },
-        {
-          "id": "sanear-backup-uptime-kuma",
-          "title": "Sanear backup-uptime-kuma.sh real",
           "status": "pending",
           "priority": "high"
         },
