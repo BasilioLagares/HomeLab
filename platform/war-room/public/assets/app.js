@@ -7,7 +7,8 @@
         resources: '/api/v1/resources.php',
         containers: '/api/v1/containers.php',
         tasks: '/api/v1/tasks.php',
-        manuals: '/api/v1/manuals.php'
+        manuals: '/api/v1/manuals.php',
+        operations: '/api/v1/operations.php'
     };
 
     var timers = {};
@@ -17,7 +18,8 @@
         resources: false,
         containers: false,
         tasks: false,
-        manuals: false
+        manuals: false,
+        operations: false
     };
 
     var failures = {
@@ -26,7 +28,8 @@
         resources: 0,
         containers: 0,
         tasks: 0,
-        manuals: 0
+        manuals: 0,
+        operations: 0
     };
 
     var lastStatusUpdateIso = null;
@@ -137,6 +140,8 @@
                 pollTasks();
             } else if (name === 'manuals') {
                 pollManuals();
+            } else if (name === 'operations') {
+                pollOperations();
             }
         }, nextDelay);
     }
@@ -272,6 +277,78 @@
         } else {
             setText('[data-manuals-note]', 'Catálogo preparado. Algunos manuales aún no están disponibles.');
         }
+    }
+
+    function operationStateLabel(state) {
+        var labels = {
+            applied: 'Aplicado',
+            available: 'Disponible',
+            closed: 'Cerrado',
+            disabled: 'Desactivado',
+            local_no_versioned: 'Local / no versionado',
+            mounted_read_only: 'Montado read-only',
+            not_mounted: 'No montado',
+            outside_git: 'Fuera de Git',
+            pending: 'Pendiente',
+            pending_design: 'Diseño pendiente',
+            pending_sanitization: 'Saneamiento pendiente',
+            read_only: 'Read-only',
+            updated: 'Actualizado'
+        };
+
+        return labels[state] || state || 'Pendiente';
+    }
+
+    function operationBadgeClass(state) {
+        if (state === 'closed' || state === 'applied' || state === 'updated' || state === 'available' || state === 'mounted_read_only' || state === 'read_only' || state === 'disabled' || state === 'not_mounted' || state === 'outside_git') {
+            return 'badge-local';
+        }
+
+        if (state === 'pending' || state === 'pending_design' || state === 'pending_sanitization') {
+            return 'badge-pending';
+        }
+
+        return 'badge-up';
+    }
+
+    function renderOperations(payload) {
+        var grid = select('[data-operations-grid]');
+        if (!grid || !payload || !Array.isArray(payload.sections)) {
+            throw new Error('Invalid operations payload');
+        }
+
+        grid.textContent = '';
+
+        payload.sections.forEach(function (section) {
+            var article = document.createElement('article');
+            var title = document.createElement('h3');
+            var summary = document.createElement('p');
+            var list = document.createElement('ul');
+
+            article.className = 'operations-card';
+            title.textContent = section.title || 'Diagnóstico';
+            summary.textContent = section.summary || 'Información operativa read-only.';
+
+            article.appendChild(title);
+            article.appendChild(summary);
+
+            (Array.isArray(section.items) ? section.items : []).forEach(function (item) {
+                var li = document.createElement('li');
+                var label = document.createElement('span');
+                var badge = document.createElement('span');
+
+                label.textContent = item.label || 'Elemento';
+                badge.className = 'badge ' + operationBadgeClass(item.state);
+                badge.textContent = operationStateLabel(item.state);
+
+                li.appendChild(label);
+                li.appendChild(badge);
+                list.appendChild(li);
+            });
+
+            article.appendChild(list);
+            grid.appendChild(article);
+        });
     }
 
     function renderManualCatalog(payload) {
@@ -474,16 +551,28 @@
     function routeTo(hash) {
         var target = hash || window.location.hash || '#dashboard';
         var isManuals = target.indexOf('#manuales') === 0;
+        var isOperations = target.indexOf('#operaciones') === 0;
         var manualView = select('[data-manual-reader-view]');
+        var operationsView = select('[data-operations-view]');
 
         document.body.classList.toggle('is-manuals-route', isManuals);
+        document.body.classList.toggle('is-operations-route', isOperations);
         if (manualView) {
             manualView.hidden = !isManuals;
+        }
+        if (operationsView) {
+            operationsView.hidden = !isOperations;
         }
 
         selectAll('[data-nav-item]').forEach(function (link) {
             var href = link.getAttribute('href') || '';
-            link.classList.toggle('is-active', isManuals ? href === '#manuales' : href === '#dashboard');
+            var activeHref = '#dashboard';
+            if (isManuals) {
+                activeHref = '#manuales';
+            } else if (isOperations) {
+                activeHref = '#operaciones';
+            }
+            link.classList.toggle('is-active', href === activeHref);
         });
 
         if (isManuals) {
@@ -728,6 +817,42 @@
         });
     }
 
+    function pollOperations() {
+        if (inFlight.operations) {
+            scheduleNext('operations', 60000);
+            return;
+        }
+
+        inFlight.operations = true;
+
+        fetchJson(endpoints.operations, 2500).then(function (data) {
+            if (!data || data.ok !== true || !data.data || data.data.operations_mode !== 'read_only') {
+                throw new Error('Operations API failed');
+            }
+
+            failures.operations = 0;
+            renderOperations(data.data);
+        }).catch(function () {
+            failures.operations += 1;
+            var grid = select('[data-operations-grid]');
+            if (grid) {
+                grid.textContent = '';
+                var article = document.createElement('article');
+                var title = document.createElement('h3');
+                var text = document.createElement('p');
+                article.className = 'operations-card';
+                title.textContent = 'Diagnóstico no disponible';
+                text.textContent = 'No se pudo cargar el estado operativo read-only.';
+                article.appendChild(title);
+                article.appendChild(text);
+                grid.appendChild(article);
+            }
+        }).finally(function () {
+            inFlight.operations = false;
+            scheduleNext('operations', 60000);
+        });
+    }
+
     document.addEventListener('click', function (event) {
         var button = event.target.closest('[data-manual-slug]');
         if (!button) {
@@ -753,4 +878,5 @@
     pollContainers();
     pollTasks();
     pollManuals();
+    pollOperations();
 })();

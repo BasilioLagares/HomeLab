@@ -70,6 +70,7 @@ $navItems = [
     'Almacenamiento',
     'Monitoreo',
     'Manuales',
+    'Operaciones',
     'Automatización',
     'Backups',
     'Configuración',
@@ -103,7 +104,13 @@ $systemStats = [
 
             <nav class="nav-list" aria-label="Secciones">
                 <?php foreach ($navItems as $index => $item): ?>
-                    <?php $href = $item === 'Manuales' ? '#manuales' : ($index === 0 ? '#dashboard' : '#panel-principal'); ?>
+                    <?php
+                    $href = match ($item) {
+                        'Manuales' => '#manuales',
+                        'Operaciones' => '#operaciones',
+                        default => $index === 0 ? '#dashboard' : '#panel-principal',
+                    };
+                    ?>
                     <a class="<?= $index === 0 ? 'is-active' : ''; ?>" href="<?= e($href); ?>" data-nav-item="<?= e(strtolower($item)); ?>">
                         <span class="nav-icon" aria-hidden="true"></span>
                         <?= e($item); ?>
@@ -217,6 +224,31 @@ $systemStats = [
                         <div class="manual-content" data-manual-content>
                             <p>Elige un manual del catálogo para leerlo dentro de la War Room.</p>
                         </div>
+                    </article>
+                </div>
+            </section>
+
+            <section class="operations-view" id="operaciones" aria-labelledby="operations-title" data-operations-view hidden>
+                <div class="operations-header">
+                    <div>
+                        <span class="operations-kicker">Diagnóstico operativo</span>
+                        <h2 id="operations-title">Estado Operativo</h2>
+                        <p>Vista read-only para revisar estado de fase, seguridad y próximos pasos. Sin cambios en Docker ni acciones administrativas.</p>
+                    </div>
+                    <span class="badge badge-local">READ-ONLY</span>
+                </div>
+
+                <div class="operations-safety" aria-label="Restricciones de seguridad">
+                    <span>Sin shell</span>
+                    <span>Sin docker.sock</span>
+                    <span>Sin comandos libres</span>
+                    <span>Sin cambios administrativos</span>
+                </div>
+
+                <div class="operations-grid" data-operations-grid>
+                    <article class="operations-card">
+                        <h3>Cargando diagnóstico</h3>
+                        <p>Consultando endpoint read-only de operaciones.</p>
                     </article>
                 </div>
             </section>
