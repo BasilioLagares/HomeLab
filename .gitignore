@@ -21,6 +21,9 @@
 *.override.*
 
 # --- Secrets, credentials and tokens ---
+scripts/.secrets/
+scripts/**/*.secret
+scripts/**/*.password
 *secret*
 *secrets*
 *credential*
