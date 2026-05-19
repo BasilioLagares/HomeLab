@@ -30,9 +30,15 @@
     };
 
     var lastStatusUpdateIso = null;
+    var manualsCatalog = [];
+    var selectedManualSlug = null;
 
     function select(selector) {
         return document.querySelector(selector);
+    }
+
+    function selectAll(selector) {
+        return Array.prototype.slice.call(document.querySelectorAll(selector));
     }
 
     function setText(selector, value) {
@@ -100,6 +106,13 @@
         }).finally(function () {
             clearTimeout(timeout);
         });
+    }
+
+    function buildManualUrl(slug) {
+        if (!slug) {
+            return endpoints.manuals;
+        }
+        return endpoints.manuals + '?slug=' + encodeURIComponent(slug);
     }
 
     function scheduleNext(name, baseIntervalMs) {
@@ -217,6 +230,7 @@
             throw new Error('Invalid manuals payload');
         }
 
+        manualsCatalog = payload.items;
         list.textContent = '';
 
         payload.items.forEach(function (manual) {
@@ -238,6 +252,8 @@
             list.appendChild(li);
         });
 
+        renderManualCatalog(payload);
+
         var stateLabel = 'Read-only';
         if (payload.state === 'available') {
             stateLabel = 'Disponible';
@@ -255,6 +271,227 @@
             setText('[data-manuals-note]', 'Catálogo preparado. Montaje de manuales pendiente en el contenedor.');
         } else {
             setText('[data-manuals-note]', 'Catálogo preparado. Algunos manuales aún no están disponibles.');
+        }
+    }
+
+    function renderManualCatalog(payload) {
+        var list = select('[data-manual-reader-list]');
+        if (!list || !payload || !Array.isArray(payload.items)) {
+            return;
+        }
+
+        list.textContent = '';
+
+        payload.items.forEach(function (manual) {
+            var li = document.createElement('li');
+            var button = document.createElement('button');
+            var title = document.createElement('strong');
+            var summary = document.createElement('span');
+            var state = document.createElement('em');
+
+            button.type = 'button';
+            button.dataset.manualSlug = manual.id;
+            button.className = manual.id === selectedManualSlug ? 'is-active' : '';
+
+            title.textContent = manual.title || manual.id || 'Manual';
+            summary.textContent = manual.summary || 'Documento saneado de consulta.';
+            state.textContent = manual.available ? 'Disponible' : 'Pendiente de mount';
+
+            button.appendChild(title);
+            button.appendChild(summary);
+            button.appendChild(state);
+            li.appendChild(button);
+            list.appendChild(li);
+        });
+
+        updateManualReaderStatus(payload);
+    }
+
+    function updateManualReaderStatus(payload) {
+        if (!payload) {
+            return;
+        }
+
+        if (payload.manuals_available === true) {
+            setText('[data-manual-reader-status]', 'Manuales disponibles para lectura online.');
+        } else if (payload.reason === 'manuals_not_mounted') {
+            setText('[data-manual-reader-status]', 'El catálogo está definido, pero el mount de manuales aún no está aplicado.');
+        } else {
+            setText('[data-manual-reader-status]', 'Catálogo preparado con disponibilidad parcial.');
+        }
+    }
+
+    function clearManualContent(title, summary, state) {
+        var content = select('[data-manual-content]');
+        setText('[data-manual-content-title]', title);
+        setText('[data-manual-content-summary]', summary);
+        setText('[data-manual-content-state]', state);
+
+        if (content) {
+            content.textContent = '';
+            var p = document.createElement('p');
+            p.textContent = summary;
+            content.appendChild(p);
+        }
+    }
+
+    function appendParagraph(container, lines) {
+        var text = lines.join(' ').trim();
+        if (!text) {
+            return;
+        }
+
+        var p = document.createElement('p');
+        p.textContent = text;
+        container.appendChild(p);
+    }
+
+    function renderMarkdownText(markdown) {
+        var container = select('[data-manual-content]');
+        if (!container) {
+            return;
+        }
+
+        container.textContent = '';
+
+        var lines = String(markdown || '').replace(/\r\n/g, '\n').split('\n');
+        var paragraph = [];
+        var list = null;
+        var code = null;
+
+        function flushParagraph() {
+            appendParagraph(container, paragraph);
+            paragraph = [];
+        }
+
+        function flushList() {
+            if (list) {
+                container.appendChild(list);
+                list = null;
+            }
+        }
+
+        function flushCode() {
+            if (code) {
+                container.appendChild(code);
+                code = null;
+            }
+        }
+
+        lines.forEach(function (line) {
+            var trimmed = line.trim();
+
+            if (trimmed.indexOf('```') === 0) {
+                flushParagraph();
+                flushList();
+
+                if (code) {
+                    flushCode();
+                } else {
+                    code = document.createElement('pre');
+                    code.appendChild(document.createElement('code'));
+                }
+                return;
+            }
+
+            if (code) {
+                code.firstChild.textContent += line + '\n';
+                return;
+            }
+
+            if (trimmed === '') {
+                flushParagraph();
+                flushList();
+                return;
+            }
+
+            if (trimmed.indexOf('# ') === 0 || trimmed.indexOf('## ') === 0 || trimmed.indexOf('### ') === 0) {
+                var level = trimmed.indexOf('### ') === 0 ? 4 : (trimmed.indexOf('## ') === 0 ? 3 : 2);
+                var heading = document.createElement('h' + level);
+
+                flushParagraph();
+                flushList();
+                heading.textContent = trimmed.replace(/^#{1,3}\s+/, '');
+                container.appendChild(heading);
+                return;
+            }
+
+            if (trimmed.indexOf('- ') === 0) {
+                var item = document.createElement('li');
+
+                flushParagraph();
+                if (!list) {
+                    list = document.createElement('ul');
+                }
+                item.textContent = trimmed.slice(2);
+                list.appendChild(item);
+                return;
+            }
+
+            paragraph.push(trimmed);
+        });
+
+        flushParagraph();
+        flushList();
+        flushCode();
+    }
+
+    function loadManual(slug) {
+        if (!slug) {
+            clearManualContent('Selecciona un manual', 'El contenido se cargará desde la API read-only cuando esté disponible.', 'Sin selección');
+            return;
+        }
+
+        selectedManualSlug = slug;
+        renderManualCatalog({ items: manualsCatalog });
+        clearManualContent('Cargando manual', 'Solicitando contenido por API read-only.', 'Cargando');
+
+        fetchJson(buildManualUrl(slug), 2500).then(function (data) {
+            var manual = data && data.data ? data.data.manual : null;
+            if (!data || data.ok !== true || !manual) {
+                throw new Error('Manual API failed');
+            }
+
+            setText('[data-manual-content-title]', manual.title || slug);
+            setText('[data-manual-content-summary]', manual.summary || 'Manual saneado de consulta.');
+
+            if (manual.available && typeof manual.content === 'string') {
+                setText('[data-manual-content-state]', 'Read-only');
+                renderMarkdownText(manual.content);
+            } else {
+                setText('[data-manual-content-state]', 'Pendiente');
+                clearManualContent(
+                    manual.title || slug,
+                    'El manual existe en el catálogo, pero el contenido aún no está montado en el contenedor.',
+                    'Pendiente'
+                );
+            }
+        }).catch(function () {
+            clearManualContent('Manual no disponible', 'No se pudo cargar el contenido de forma segura.', 'Sin datos');
+        });
+    }
+
+    function routeTo(hash) {
+        var target = hash || window.location.hash || '#dashboard';
+        var isManuals = target.indexOf('#manuales') === 0;
+        var manualView = select('[data-manual-reader-view]');
+
+        document.body.classList.toggle('is-manuals-route', isManuals);
+        if (manualView) {
+            manualView.hidden = !isManuals;
+        }
+
+        selectAll('[data-nav-item]').forEach(function (link) {
+            var href = link.getAttribute('href') || '';
+            link.classList.toggle('is-active', isManuals ? href === '#manuales' : href === '#dashboard');
+        });
+
+        if (isManuals) {
+            var parts = target.split('/');
+            var slug = parts.length > 1 ? decodeURIComponent(parts[1]) : null;
+            if (slug) {
+                loadManual(slug);
+            }
         }
     }
 
@@ -480,6 +717,7 @@
             failures.manuals = 0;
             showManualsError(false);
             renderManuals(data.data);
+            routeTo(window.location.hash);
         }).catch(function () {
             failures.manuals += 1;
             showManualsError(true);
@@ -490,8 +728,24 @@
         });
     }
 
+    document.addEventListener('click', function (event) {
+        var button = event.target.closest('[data-manual-slug]');
+        if (!button) {
+            return;
+        }
+
+        event.preventDefault();
+        window.location.hash = '#manuales/' + encodeURIComponent(button.dataset.manualSlug);
+        loadManual(button.dataset.manualSlug);
+    });
+
+    window.addEventListener('hashchange', function () {
+        routeTo(window.location.hash);
+    });
+
     renderClock();
     setInterval(renderClock, 1000);
+    routeTo(window.location.hash);
 
     pollStatus();
     pollServices();

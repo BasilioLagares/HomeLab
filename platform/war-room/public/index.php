@@ -103,7 +103,8 @@ $systemStats = [
 
             <nav class="nav-list" aria-label="Secciones">
                 <?php foreach ($navItems as $index => $item): ?>
-                    <a class="<?= $index === 0 ? 'is-active' : ''; ?>" href="#panel-principal">
+                    <?php $href = $item === 'Manuales' ? '#manuales' : ($index === 0 ? '#dashboard' : '#panel-principal'); ?>
+                    <a class="<?= $index === 0 ? 'is-active' : ''; ?>" href="<?= e($href); ?>" data-nav-item="<?= e(strtolower($item)); ?>">
                         <span class="nav-icon" aria-hidden="true"></span>
                         <?= e($item); ?>
                     </a>
@@ -185,6 +186,40 @@ $systemStats = [
                     </div>
                 <?php endforeach; ?>
             </footer>
+
+            <section class="manual-reader-view" id="manuales" aria-labelledby="manual-reader-title" data-manual-reader-view hidden>
+                <div class="manual-reader-header">
+                    <div>
+                        <span class="manual-reader-kicker">Documentación segura</span>
+                        <h2 id="manual-reader-title">Manuales</h2>
+                        <p>Lectura online read-only. Sin ejecución de comandos, terminales ni acciones administrativas.</p>
+                    </div>
+                    <span class="badge badge-local">READ-ONLY</span>
+                </div>
+
+                <div class="manual-reader-grid">
+                    <aside class="manual-catalog" aria-label="Catálogo de manuales">
+                        <h3>Catálogo</h3>
+                        <p data-manual-reader-status>Preparando catálogo documental.</p>
+                        <ul class="manual-reader-list" data-manual-reader-list>
+                            <li>
+                                <button type="button" disabled>Cargando manuales</button>
+                            </li>
+                        </ul>
+                    </aside>
+
+                    <article class="manual-content-card" aria-live="polite">
+                        <div class="manual-content-heading">
+                            <span data-manual-content-state>Sin selección</span>
+                            <h3 data-manual-content-title>Selecciona un manual</h3>
+                            <p data-manual-content-summary>El contenido se cargará desde la API read-only cuando esté disponible.</p>
+                        </div>
+                        <div class="manual-content" data-manual-content>
+                            <p>Elige un manual del catálogo para leerlo dentro de la War Room.</p>
+                        </div>
+                    </article>
+                </div>
+            </section>
         </section>
 
         <aside class="right-rail" id="panel-principal" aria-label="Estado operacional">

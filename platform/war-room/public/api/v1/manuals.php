@@ -14,10 +14,6 @@ if (!in_array($_SERVER['REQUEST_METHOD'] ?? 'GET', ['GET', 'HEAD'], true)) {
 
 /**
  * Safe allowlist for public documentation metadata.
- *
- * The Docker deployment does not mount docs/manuals by default yet. When that
- * mount exists, this endpoint can report availability without exposing host
- * paths. Keep content serving behind this allowlist if it is added later.
  */
 function allowedManuals(): array
 {
@@ -48,7 +44,7 @@ function allowedManuals(): array
 function manualsBaseDir(): ?string
 {
     $candidates = [
-        '/var/warroom-manuals',
+        '/var/www/manuals',
         dirname(__DIR__, 5) . '/docs/manuals',
     ];
 
@@ -80,6 +76,36 @@ function isManualReadable(?string $baseDir, string $file): bool
         && is_readable($realFile);
 }
 
+function readManualContent(?string $baseDir, array $manual): ?string
+{
+    if ($baseDir === null) {
+        return null;
+    }
+
+    $path = $baseDir . DIRECTORY_SEPARATOR . $manual['file'];
+    $realBase = realpath($baseDir);
+    $realFile = realpath($path);
+
+    if ($realBase === false || $realFile === false) {
+        return null;
+    }
+
+    if (!str_starts_with($realFile, $realBase . DIRECTORY_SEPARATOR)) {
+        return null;
+    }
+
+    if (!is_file($realFile) || !is_readable($realFile)) {
+        return null;
+    }
+
+    $content = file_get_contents($realFile);
+    if (!is_string($content)) {
+        return null;
+    }
+
+    return $content;
+}
+
 $slug = $_GET['slug'] ?? null;
 $manuals = allowedManuals();
 
@@ -92,19 +118,29 @@ if ($slug !== null && (!is_string($slug) || !array_key_exists($slug, $manuals)))
 
 $baseDir = manualsBaseDir();
 $items = [];
+$selected = null;
+$selectedContent = null;
 
 foreach ($manuals as $id => $manual) {
-    if ($slug !== null && $slug !== $id) {
-        continue;
-    }
-
+    $available = isManualReadable($baseDir, $manual['file']);
     $items[] = [
         'id' => $id,
         'title' => $manual['title'],
         'summary' => $manual['summary'],
         'read_only' => true,
-        'available' => isManualReadable($baseDir, $manual['file']),
+        'available' => $available,
     ];
+
+    if ($slug !== null && $slug === $id) {
+        $selected = [
+            'id' => $id,
+            'title' => $manual['title'],
+            'summary' => $manual['summary'],
+            'read_only' => true,
+            'available' => $available,
+        ];
+        $selectedContent = readManualContent($baseDir, $manual);
+    }
 }
 
 $availableCount = count(array_filter($items, static fn (array $item): bool => $item['available']));
@@ -131,6 +167,17 @@ jsonResponse([
         'manuals_available' => $state === 'available',
         'reason' => $reason,
         'items' => $items,
+        'selected' => $selected,
+        'manual' => $selected === null ? null : [
+            'id' => $selected['id'],
+            'title' => $selected['title'],
+            'summary' => $selected['summary'],
+            'read_only' => true,
+            'available' => $selectedContent !== null,
+            'content_type' => 'text/markdown',
+            'content' => $selectedContent,
+            'error' => $selectedContent === null ? ($baseDir === null ? 'manuals_not_mounted' : 'manual_not_readable') : null,
+        ],
         'last_update' => nowIso(),
     ],
 ]);
