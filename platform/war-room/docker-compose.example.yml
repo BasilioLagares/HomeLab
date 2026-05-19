@@ -15,6 +15,9 @@ services:
       # Application code served by Apache/PHP.
       - ./public:/var/www/html:ro
 
+      # Read-only sanitized documentation for the Manuals reader.
+      - ${WARROOM_MANUALS_DIR:-../../docs/manuals}:/var/www/manuals:ro
+
       # Optional reviewed task/checklist state. Do not store secrets here.
       - ${WARROOM_STATE_DIR:-../../state}:/var/warroom-state:ro
 
