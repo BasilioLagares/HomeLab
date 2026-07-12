@@ -1,0 +1,18 @@
+{
+  "last_update": "2026-01-01T00:00:00+00:00",
+  "source": "host_exporter",
+  "state": "operational",
+  "containers_total": 1,
+  "containers_running": 1,
+  "containers_exited": 0,
+  "items": [
+    {
+      "id": "example123",
+      "name": "example_service",
+      "image": "example/service:1.0.0",
+      "state": "running",
+      "status": "Up 1 minute",
+      "ports": "127.0.0.1:8080->80/tcp"
+    }
+  ]
+}
