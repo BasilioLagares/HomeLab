@@ -1,20 +1,27 @@
 <?php
 declare(strict_types=1);
 
-date_default_timezone_set('Europe/Madrid');
+function configValue(string $name, string $fallback): string
+{
+    $value = getenv($name);
+    return is_string($value) && trim($value) !== '' ? $value : $fallback;
+}
+
+$warRoomTimezone = configValue('WARROOM_TIMEZONE', 'UTC');
+date_default_timezone_set($warRoomTimezone);
 
 function e(string $value): string
 {
     return htmlspecialchars($value, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 }
 
-$now = new DateTimeImmutable('now', new DateTimeZone('Europe/Madrid'));
+$now = new DateTimeImmutable('now');
 
 $overview = [
     'estado' => 'PANEL OPERATIVO LOCAL',
     'modo' => 'Modo dinámico (API)',
     'version' => 'WAR ROOM V0.4',
-    'zona' => 'Europe/Madrid',
+    'zona' => $warRoomTimezone,
 ];
 
 $cards = [
@@ -44,13 +51,20 @@ $cards = [
     ],
 ];
 
+$warRoomUrl = configValue('WARROOM_SERVICE_WARROOM_URL', 'https://warroom.example.invalid');
+$homepageUrl = configValue('WARROOM_SERVICE_HOMEPAGE_URL', 'https://homepage.example.invalid');
+$kumaUrl = configValue('WARROOM_SERVICE_KUMA_URL', 'https://status.example.invalid');
+$adminerUrl = configValue('WARROOM_SERVICE_ADMINER_URL', 'https://database.example.invalid');
+$phpUrl = configValue('WARROOM_SERVICE_PHP_URL', 'https://demo.example.invalid');
+$customUrl = configValue('WARROOM_SERVICE_CUSTOM_URL', 'https://custom.example.invalid');
+
 $criticalServices = [
-    ['name' => 'War Room', 'state' => 'UP', 'note' => 'https://warroom.homelab.home.arpa', 'url' => 'https://warroom.homelab.home.arpa'],
-    ['name' => 'Homepage', 'state' => 'UP', 'note' => 'https://homepage.homelab.home.arpa', 'url' => 'https://homepage.homelab.home.arpa'],
-    ['name' => 'Uptime Kuma', 'state' => 'UP', 'note' => 'https://kuma.homelab.home.arpa', 'url' => 'https://kuma.homelab.home.arpa'],
-    ['name' => 'Adminer', 'state' => 'LOCAL', 'note' => 'https://adminer.homelab.home.arpa (protegido con Basic Auth)', 'url' => 'https://adminer.homelab.home.arpa'],
-    ['name' => 'PHP Demo', 'state' => 'LOCAL', 'note' => 'https://php.homelab.home.arpa', 'url' => 'https://php.homelab.home.arpa'],
-    ['name' => 'Mariano Limón', 'state' => 'LOCAL', 'note' => 'https://mariano.homelab.home.arpa', 'url' => 'https://mariano.homelab.home.arpa'],
+    ['name' => 'War Room', 'state' => 'UP', 'note' => $warRoomUrl, 'url' => $warRoomUrl],
+    ['name' => 'Homepage', 'state' => 'UP', 'note' => $homepageUrl, 'url' => $homepageUrl],
+    ['name' => 'Uptime Kuma', 'state' => 'UP', 'note' => $kumaUrl, 'url' => $kumaUrl],
+    ['name' => 'Adminer', 'state' => 'LOCAL', 'note' => $adminerUrl . ' (protegido con Basic Auth)', 'url' => $adminerUrl],
+    ['name' => 'PHP Demo', 'state' => 'LOCAL', 'note' => $phpUrl, 'url' => $phpUrl],
+    ['name' => configValue('WARROOM_SERVICE_CUSTOM_NAME', 'Custom Service'), 'state' => 'LOCAL', 'note' => $customUrl, 'url' => $customUrl],
     ['name' => 'Caddy / Proxy', 'state' => 'UP', 'note' => 'HTTPS interno activo (80/443)', 'url' => null],
     ['name' => 'MariaDB', 'state' => 'LOCAL', 'note' => 'Puerto 3306 (sin URL directa)', 'url' => null],
 ];

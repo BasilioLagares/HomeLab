@@ -14,19 +14,14 @@ if (!in_array($_SERVER['REQUEST_METHOD'] ?? 'GET', ['GET', 'HEAD'], true)) {
 
 function taskSourcePath(): string
 {
-    $hostPath = '/home/basilio/HomeLab/state/homelab_tasks.json';
-    if (is_readable($hostPath)) {
-        return $hostPath;
-    }
-
-    $repoPath = dirname(__DIR__, 5) . '/state/homelab_tasks.json';
-    if (is_readable($repoPath)) {
-        return $repoPath;
-    }
-
     $stateMountPath = '/var/warroom-state/homelab_tasks.json';
     if (is_readable($stateMountPath)) {
         return $stateMountPath;
+    }
+
+    $repoPath = dirname(__DIR__, 5) . '/state/homelab_tasks.example.json';
+    if (is_readable($repoPath)) {
+        return $repoPath;
     }
 
     return '/var/warroom-runtime/homelab_tasks.json';

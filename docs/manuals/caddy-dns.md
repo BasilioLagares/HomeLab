@@ -14,7 +14,7 @@ El DNS interno resuelve nombres del HomeLab hacia el punto de entrada correcto.
 La ruta canónica actual de War Room es:
 
 ```text
-https://warroom.homelab.home.arpa
+https://warroom.example.home.arpa
 ```
 
 La nomenclatura `.local` antigua no es la ruta canónica actual. La documentación
@@ -52,9 +52,9 @@ Pasos:
 Usar comprobaciones de solo lectura:
 
 ```bash
-getent hosts warroom.homelab.home.arpa
-curl -k -I https://warroom.homelab.home.arpa
-curl -k https://warroom.homelab.home.arpa/api/v1/health.php
+getent hosts warroom.example.home.arpa
+curl -k -I https://warroom.example.home.arpa
+curl -k https://warroom.example.home.arpa/api/v1/health.php
 ```
 
 No pegar en documentación salidas que contengan cabeceras privadas, cookies,

@@ -232,9 +232,9 @@ platform/war-room/**/*.sqlite3
 !tools/**/*.sh
 tools/backups/
 
-# Checklist JSON may be tracked only after manual secret review.
+# Runtime state stays private. Only explicitly sanitized examples may be added.
 !state/
-!state/homelab_tasks.json
+!state/*.example.json
 
 # Final safety overrides. Keep these ignored until sanitized examples exist.
 runtime/
@@ -242,3 +242,59 @@ apps/
 proxy/
 stacks/
 tools/backups/
+
+# --- Public v0.1 boundary ---
+# The public snapshot contains curated manuals, not the local project journal.
+/docs/*
+!/docs/manuals/
+!/docs/manuals/**
+
+# Host-specific operational scripts stay local; publish only scripts/examples/.
+/scripts/*.sh
+
+# Real deployment and operational task state stay local. Their sanitized
+# counterparts are docker-compose.example.yml and state/*.example.json.
+/platform/war-room/docker-compose.yml
+/platform/war-room/public/assets/war-room-bg.png
+/state/*.json
+!/state/*.example.json
+
+# --- Final deny rules (must remain after every allow-list) ---
+# Prevent later documentation/code allow-lists from re-including sensitive names.
+**/*secret*
+**/*secrets*
+**/*credential*
+**/*credentials*
+**/*token*
+**/*tokens*
+**/*apikey*
+**/*api-key*
+**/*api_key*
+**/*passwd*
+**/*password*
+**/*basic_auth*
+**/*basicauth*
+**/*.htpasswd
+**/*.htdigest
+**/id_rsa*
+**/id_dsa*
+**/id_ecdsa*
+**/id_ed25519*
+**/known_hosts
+**/authorized_keys
+**/*.key
+**/*.pem
+**/*.p12
+**/*.pfx
+**/*.jks
+**/*.keystore
+**/*.crt
+**/*.cer
+**/*.csr
+**/*.srl
+**/*.sql
+**/*.dump
+**/*.dmp
+**/*.db
+**/*.sqlite
+**/*.sqlite3

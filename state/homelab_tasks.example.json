@@ -1,0 +1,29 @@
+{
+  "version": "0.1-example",
+  "blocks": [
+    {
+      "id": "current",
+      "title": "Current",
+      "items": [
+        {
+          "id": "review-public-config",
+          "title": "Review public configuration",
+          "status": "done",
+          "priority": "high"
+        }
+      ]
+    },
+    {
+      "id": "planned",
+      "title": "Planned",
+      "items": [
+        {
+          "id": "validate-clean-clone",
+          "title": "Validate from a clean clone",
+          "status": "pending",
+          "priority": "high"
+        }
+      ]
+    }
+  ]
+}

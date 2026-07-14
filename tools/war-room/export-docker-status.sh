@@ -1,7 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-OUT_DIR="/home/basilio/HomeLab/runtime/war-room"
+SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+DEFAULT_PROJECT_DIR="$(cd -- "$SCRIPT_DIR/../.." && pwd)"
+PROJECT_DIR="${PROJECT_DIR:-$DEFAULT_PROJECT_DIR}"
+OUT_DIR="${OUT_DIR:-$PROJECT_DIR/runtime/war-room}"
 OUT_FILE="${OUT_DIR}/docker-status.json"
 TMP_FILE="${OUT_FILE}.tmp"
 

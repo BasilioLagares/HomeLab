@@ -79,29 +79,13 @@ Antes de cambiar War Room:
 - Validar sintaxis de los ficheros modificados.
 - Documentar limitaciones y próximos pasos sin prometer funciones pendientes.
 
-## Roadmap
+## Planificación
 
-Manuales:
+La fuente canónica de tareas activas e ideas futuras es
+[`ROADMAP.md`](../../ROADMAP.md). Este manual no mantiene una lista paralela de
+pendientes.
 
-- Integrar esta carpeta como fuente de la sección Manuales.
-- Añadir navegación y lectura segura desde la interfaz.
-- Definir formato estable para manuales versionados.
-
-Operaciones:
-
-- Exponer únicamente estados y comprobaciones de solo lectura.
-- Añadir validaciones sobre datos runtime antes de mostrarlos.
-- Separar alertas, auditoría y acciones en componentes independientes.
-
-Deploy/Orchestrator:
-
-- Diseñar un componente separado para despliegues.
-- Exigir autenticación, permisos explícitos y registro de auditoría.
-- Mantener War Room como visor hasta que exista un diseño revisado.
-
-IA interna:
-
-- Evaluar asistencia contextual sobre documentación versionada.
-- Evitar que la IA acceda a secretos o datos runtime sensibles.
-- Mantener acciones automatizadas fuera de alcance hasta una fase específica de
-  seguridad y auditoría.
+War Room continúa siendo un visor read-only. La terminal de órdenes se estudia
+como componente separado, con autenticación, allowlist y auditoría propias. Las
+ideas de chatbot o IA interna permanecen fuera del trabajo activo y no se
+mezclan con la terminal.

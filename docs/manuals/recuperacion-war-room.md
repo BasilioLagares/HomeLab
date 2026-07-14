@@ -6,7 +6,7 @@ saneada y no incluye rutas privadas, IPs ni configuraciones reales.
 URL canónica actual:
 
 ```text
-https://warroom.homelab.home.arpa
+https://warroom.example.home.arpa
 ```
 
 La ruta `.local` antigua no debe usarse como referencia principal.
@@ -43,9 +43,9 @@ Separar:
 Comprobaciones:
 
 ```bash
-getent hosts warroom.homelab.home.arpa
-curl -k -I https://warroom.homelab.home.arpa
-curl -k https://warroom.homelab.home.arpa/api/v1/health.php
+getent hosts warroom.example.home.arpa
+curl -k -I https://warroom.example.home.arpa
+curl -k https://warroom.example.home.arpa/api/v1/health.php
 ```
 
 ## Falla HTTPS/TLS

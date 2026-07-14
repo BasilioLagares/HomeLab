@@ -42,8 +42,8 @@ Ejemplos genéricos:
 ```bash
 docker ps --filter name=<servicio-vpn>
 wg show
-getent hosts warroom.homelab.home.arpa
-curl -k -I https://warroom.homelab.home.arpa
+getent hosts warroom.example.home.arpa
+curl -k -I https://warroom.example.home.arpa
 ```
 
 Si se comparte salida para diagnóstico, eliminar cualquier clave, endpoint

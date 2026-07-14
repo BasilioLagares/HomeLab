@@ -1,7 +1,14 @@
 <?php
 declare(strict_types=1);
 
-date_default_timezone_set('Europe/Madrid');
+function configValue(string $name, string $fallback): string
+{
+    $value = getenv($name);
+    return is_string($value) && trim($value) !== '' ? $value : $fallback;
+}
+
+$warRoomTimezone = configValue('WARROOM_TIMEZONE', 'UTC');
+date_default_timezone_set($warRoomTimezone);
 
 function jsonResponse(array $payload, int $statusCode = 200): never
 {
@@ -15,7 +22,7 @@ function jsonResponse(array $payload, int $statusCode = 200): never
 
 function nowIso(): string
 {
-    return (new DateTimeImmutable('now', new DateTimeZone('Europe/Madrid')))->format(DATE_ATOM);
+    return (new DateTimeImmutable('now'))->format(DATE_ATOM);
 }
 
 function clientIp(): string
@@ -72,48 +79,48 @@ function serviceDefinitions(): array
         [
             'id' => 'warroom',
             'name' => 'War Room',
-            'url' => 'https://warroom.homelab.home.arpa',
-            'probe_url' => 'http://127.0.0.1/',
+            'url' => configValue('WARROOM_SERVICE_WARROOM_URL', 'https://warroom.example.invalid'),
+            'probe_url' => configValue('WARROOM_SERVICE_WARROOM_PROBE_URL', 'https://warroom.example.invalid'),
             'sensitive' => false,
             'default_state' => 'up',
         ],
         [
             'id' => 'homepage',
             'name' => 'Homepage',
-            'url' => 'https://homepage.homelab.home.arpa',
-            'probe_url' => 'http://homelab_homepage:3000',
+            'url' => configValue('WARROOM_SERVICE_HOMEPAGE_URL', 'https://homepage.example.invalid'),
+            'probe_url' => configValue('WARROOM_SERVICE_HOMEPAGE_PROBE_URL', 'https://homepage.example.invalid'),
             'sensitive' => false,
             'default_state' => 'up',
         ],
         [
             'id' => 'kuma',
             'name' => 'Uptime Kuma',
-            'url' => 'https://kuma.homelab.home.arpa',
-            'probe_url' => 'http://homelab_uptime_kuma:3001',
+            'url' => configValue('WARROOM_SERVICE_KUMA_URL', 'https://status.example.invalid'),
+            'probe_url' => configValue('WARROOM_SERVICE_KUMA_PROBE_URL', 'https://status.example.invalid'),
             'sensitive' => false,
             'default_state' => 'up',
         ],
         [
             'id' => 'php',
             'name' => 'PHP Demo',
-            'url' => 'https://php.homelab.home.arpa',
-            'probe_url' => 'http://homelab_php_demo:80',
+            'url' => configValue('WARROOM_SERVICE_PHP_URL', 'https://demo.example.invalid'),
+            'probe_url' => configValue('WARROOM_SERVICE_PHP_PROBE_URL', 'https://demo.example.invalid'),
             'sensitive' => false,
             'default_state' => 'local',
         ],
         [
-            'id' => 'mariano',
-            'name' => 'Mariano Limón',
-            'url' => 'https://mariano.homelab.home.arpa',
-            'probe_url' => 'http://homelab_mariano_limon_web:80',
+            'id' => configValue('WARROOM_SERVICE_CUSTOM_ID', 'custom'),
+            'name' => configValue('WARROOM_SERVICE_CUSTOM_NAME', 'Custom Service'),
+            'url' => configValue('WARROOM_SERVICE_CUSTOM_URL', 'https://custom.example.invalid'),
+            'probe_url' => configValue('WARROOM_SERVICE_CUSTOM_PROBE_URL', 'https://custom.example.invalid'),
             'sensitive' => false,
             'default_state' => 'local',
         ],
         [
             'id' => 'adminer',
             'name' => 'Adminer',
-            'url' => 'https://adminer.homelab.home.arpa',
-            'probe_url' => 'http://homelab_adminer:8080',
+            'url' => configValue('WARROOM_SERVICE_ADMINER_URL', 'https://database.example.invalid'),
+            'probe_url' => configValue('WARROOM_SERVICE_ADMINER_PROBE_URL', 'https://database.example.invalid'),
             'sensitive' => true,
             'default_state' => 'local',
         ],

@@ -6,9 +6,27 @@
 
 services:
   war-room:
-    image: php:8.3-apache
-    container_name: war_room
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: homelab-war-room:0.1.0
     restart: unless-stopped
+    environment:
+      WARROOM_TIMEZONE: ${WARROOM_TIMEZONE:-UTC}
+      WARROOM_SERVICE_WARROOM_URL: ${WARROOM_SERVICE_WARROOM_URL:-https://warroom.example.invalid}
+      WARROOM_SERVICE_WARROOM_PROBE_URL: ${WARROOM_SERVICE_WARROOM_PROBE_URL:-https://warroom.example.invalid}
+      WARROOM_SERVICE_HOMEPAGE_URL: ${WARROOM_SERVICE_HOMEPAGE_URL:-https://homepage.example.invalid}
+      WARROOM_SERVICE_HOMEPAGE_PROBE_URL: ${WARROOM_SERVICE_HOMEPAGE_PROBE_URL:-https://homepage.example.invalid}
+      WARROOM_SERVICE_KUMA_URL: ${WARROOM_SERVICE_KUMA_URL:-https://status.example.invalid}
+      WARROOM_SERVICE_KUMA_PROBE_URL: ${WARROOM_SERVICE_KUMA_PROBE_URL:-https://status.example.invalid}
+      WARROOM_SERVICE_PHP_URL: ${WARROOM_SERVICE_PHP_URL:-https://demo.example.invalid}
+      WARROOM_SERVICE_PHP_PROBE_URL: ${WARROOM_SERVICE_PHP_PROBE_URL:-https://demo.example.invalid}
+      WARROOM_SERVICE_CUSTOM_ID: ${WARROOM_SERVICE_CUSTOM_ID:-custom}
+      WARROOM_SERVICE_CUSTOM_NAME: ${WARROOM_SERVICE_CUSTOM_NAME:-Custom Service}
+      WARROOM_SERVICE_CUSTOM_URL: ${WARROOM_SERVICE_CUSTOM_URL:-https://custom.example.invalid}
+      WARROOM_SERVICE_CUSTOM_PROBE_URL: ${WARROOM_SERVICE_CUSTOM_PROBE_URL:-https://custom.example.invalid}
+      WARROOM_SERVICE_ADMINER_URL: ${WARROOM_SERVICE_ADMINER_URL:-https://database.example.invalid}
+      WARROOM_SERVICE_ADMINER_PROBE_URL: ${WARROOM_SERVICE_ADMINER_PROBE_URL:-https://database.example.invalid}
     ports:
       - "${WARROOM_BIND:-127.0.0.1}:${WARROOM_PORT:-8090}:80"
     volumes:

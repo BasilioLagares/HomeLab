@@ -58,6 +58,8 @@ Endpoints disponibles:
 - `GET /api/v1/resources.php`
 - `GET /api/v1/containers.php`
 - `GET /api/v1/tasks.php`
+- `GET /api/v1/manuals.php`
+- `GET /api/v1/operations.php`
 
 Propiedades esperadas:
 
@@ -73,6 +75,9 @@ Propiedades esperadas:
 El fichero `docker-compose.example.yml` es una plantilla saneada para despliegue.
 No sustituye automáticamente a la configuración real del host.
 
+La imagen se construye desde `Dockerfile`, instala PHP cURL explícitamente y
+verifica durante el build que la extensión puede cargarse.
+
 Mounts esperados:
 
 - `./public:/var/www/html:ro`: código público de War Room.
@@ -82,6 +87,24 @@ Mounts esperados:
 
 Si se usan rutas distintas en producción, deben configurarse fuera de Git con
 variables de entorno locales o con un compose real no versionado.
+
+Los nombres, URLs, sondas y zona horaria de la aplicación también se leen desde
+variables `WARROOM_*`. El fichero raíz `.env.example` contiene valores públicos
+no enrutables. Los valores operativos deben permanecer en un `.env` local
+ignorado e inyectarse desde el Compose privado.
+
+Para probar el ejemplo desde una clonación limpia:
+
+```bash
+cp .env.example .env
+cp state/homelab_tasks.example.json state/homelab_tasks.json
+docker network create homelab_proxy
+docker compose -f platform/war-room/docker-compose.example.yml up --build
+```
+
+Los dos ficheros copiados quedan ignorados por Git. La red externa se crea una
+sola vez. El puerto se publica únicamente en `127.0.0.1` por defecto; cualquier
+exposición a la LAN o a un proxy requiere una decisión explícita del operador.
 
 ## Política de seguridad
 
@@ -111,23 +134,11 @@ No deben añadirse a Git:
 
 Usar ficheros `.example` para documentar configuración versionable.
 
-## Próximos pasos
+## Planificación
 
-Manuales:
+El roadmap canónico del proyecto está en [`ROADMAP.md`](../../ROADMAP.md). Este
+README documenta el componente y no mantiene una lista de tareas independiente.
 
-- Documentar instalación local y requisitos mínimos.
-- Documentar formato del checklist de tareas.
-- Documentar contrato de los ficheros runtime consumidos por la API.
-
-Operaciones:
-
-- Definir exportadores externos de solo lectura.
-- Añadir validaciones automáticas para JSON de estado y runtime.
-- Revisar alertas y estados stale sin introducir acciones de escritura.
-
-Deploy/Orchestrator:
-
-- Mantener War Room como consumidor de datos, no como ejecutor de acciones.
-- Diseñar cualquier orquestador como componente separado, con autenticación,
-  auditoría y permisos explícitos.
-- Crear ejemplos saneados para despliegue sin rutas personales ni secretos.
+War Room permanece como consumidor read-only. La terminal de órdenes definida
+en el roadmap se diseña como componente separado y no convierte esta API en un
+ejecutor de shell, Docker o tareas administrativas.
