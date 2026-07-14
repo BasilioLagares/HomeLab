@@ -210,5 +210,6 @@ representados en esta vista permanecen fuera del snapshot aunque existan en el
   procedimientos saneados viven en `docs/manuals/`.
 - La configuración publicable usa `.env.example`, ficheros `*.example.*` y
   valores genéricos.
-- La publicación se valida desde un directorio limpio construido exclusivamente
-  con la allowlist; el árbol operativo no se utiliza como raíz de publicación.
+- Una exportación temporal construida exclusivamente con la allowlist puede
+  usarse para validar el contenido; los commits y pushes se realizan desde el
+  repositorio canónico después de revisar el índice.

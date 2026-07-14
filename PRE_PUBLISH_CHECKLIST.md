@@ -14,9 +14,10 @@ revisión final del snapshot exacto que se vaya a publicar.
 - [x] Decidir si los nombres de aplicaciones/personas y subdominios internos se
   eliminan, parametrizan o se consideran deliberadamente públicos.
 - [x] Sanear las definiciones de servicios codificadas en War Room.
-- [x] Conservar el historial operativo únicamente en local y crear el
-  repositorio público desde un snapshot limpio separado.
-- [ ] Crear el repositorio público separado con un único commit inicial limpio.
+- [x] Mantener el historial real del proyecto en el repositorio canónico y
+  publicar mediante pushes normales, sin reescritura ni force push.
+- [x] Integrar el commit público previo con el historial local conservando el
+  árbol actualizado y ambas líneas históricas.
 - [x] Ejecutar `gitleaks` sobre cambios preparados, snapshot limpio e historial
   completo; no se detectaron filtraciones el 14 de julio de 2026.
 - [x] Integrar PHP cURL en la imagen de War Room y validarlo dentro del
@@ -60,20 +61,19 @@ Material sensible localizado y no publicable:
 
 ## Contenido Git
 
-- [x] Rama del repositorio operativo identificada: `main`.
-- [x] Rama por defecto prevista para el repositorio público: `main`.
-- [ ] Confirmar el remoto y el repositorio público de destino justo antes de
-  publicar; el árbol operativo no debe recibir ese remoto.
+- [x] Rama del repositorio canónico identificada: `main`.
+- [x] Rama por defecto del repositorio público: `main`.
+- [x] Remoto público confirmado: `origin` apunta a
+  `https://github.com/BasilioLagares/HomeLab.git`.
 - [x] La identidad Git usa una dirección `users.noreply.github.com`.
 - [x] Los archivos rastreados se han inventariado.
 - [x] Los archivos ignorados críticos se han inventariado.
 - [x] Revisar `git status --short --ignored` inmediatamente antes de exportar.
 - [x] Revisar `git diff --check` y `git diff --cached`.
 - [x] Revisar `git ls-files` y confirmar cada fichero binario.
-- [ ] Crear el tag `v0.1.0` únicamente sobre el commit inicial limpio del
-  repositorio público separado.
-- [ ] Publicar únicamente desde el repositorio separado cuando la auditoría
-  final sea satisfactoria.
+- [ ] Crear o mover tags únicamente sobre commits revisados del historial
+  canónico.
+- [x] Publicar únicamente desde el repositorio canónico mediante push normal.
 
 No usar `git add .` en el árbol operativo.
 
@@ -130,26 +130,25 @@ No usar `git add .` en el árbol operativo.
 
 ## Auditoría final sugerida
 
-Ejecutar sobre el directorio limpio, después de inicializarlo con rama `main` y
-preparar exclusivamente los ficheros del manifiesto:
+Ejecutar en el repositorio canónico antes de cada push:
 
 ```bash
 git status --short
 git ls-files
 git diff --cached --check
 comm -3 <(git ls-files | sort) <(awk '!/^($|#)/ {print}' PUBLIC_V0.1_MANIFEST.txt | sort)
-git grep --cached -nEI 'BEGIN .*PRIVATE KEY|password|secret|token|api[_-]?key|credential'
-git grep --cached -nEI '/home/[^/ ]+|([0-9]{1,3}\.){3}[0-9]{1,3}'
-find . -type f \( -name '.env' -o -name '*.key' -o -name '*.pem' -o -name '*.p12' -o -name '*.sql' -o -name '*.tar.gz' \) -print
-gitleaks dir . --redact
+git grep -nEI 'BEGIN .*PRIVATE KEY|password|secret|token|api[_-]?key|credential'
+git grep -nEI '/home/[^/ ]+|([0-9]{1,3}\.){3}[0-9]{1,3}'
+git ls-files | grep -E '(^|/)(\.env|.*\.(key|pem|p12|sql|tar\.gz))$'
+gitleaks git --redact
 docker compose -f platform/war-room/docker-compose.example.yml config --quiet
 find platform/war-room/public -type f -name '*.php' -print0 | xargs -0 -n1 php -l
 find scripts tools -type f -name '*.sh' -print0 | xargs -0 -n1 bash -n
 jq empty state/homelab_tasks.example.json platform/war-room/examples/docker-status.example.json
 ```
 
-Después del commit inicial, ejecutar también `gitleaks git --redact` antes de
-crear el tag `v0.1.0`.
+Después del commit definitivo, repetir `gitleaks git --redact` antes de crear o
+mover un tag y antes del push.
 
 Revisar manualmente todos los resultados: las búsquedas producen falsos
 positivos en documentación defensiva, y una salida vacía no demuestra por sí

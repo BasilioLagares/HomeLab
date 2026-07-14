@@ -6,10 +6,10 @@ representar esta información, pero no deben mantener roadmaps independientes.
 
 ## Estado actual
 
-- El trabajo de cierre del snapshot público `v0.1` se considera cerrado a nivel
-  de roadmap. El snapshot está preparado localmente; las comprobaciones
-  residuales de exportación, commit público y tag viven exclusivamente en
-  `PRE_PUBLISH_CHECKLIST.md`.
+- El trabajo de cierre del contenido público `v0.1` se considera cerrado a nivel
+  de roadmap. El repositorio original y `origin/main` forman el historial
+  canónico; las comprobaciones aplicables a commits, tags y pushes viven
+  exclusivamente en `PRE_PUBLISH_CHECKLIST.md`.
 - La allowlist pública está definida en `PUBLIC_V0.1_MANIFEST.txt` y separa el
   código publicable de la configuración, estado y operación privados.
 - War Room funciona como panel PHP/JavaScript de solo lectura, sin acceso a
@@ -23,12 +23,12 @@ representar esta información, pero no deben mantener roadmaps independientes.
 
 ### 5. Revisar Git y la seguridad del repositorio
 
-- Conservar el historial operativo en local y crear el repositorio público desde
-  un snapshot limpio separado, sin publicar las rutas personales antiguas.
-- Usar `main` como rama por defecto y reservar `v0.1.0` para el commit inicial
-  limpio del repositorio público.
-- Confirmar el remoto y el repositorio de destino únicamente en la copia
-  pública separada.
+- Conservar el historial real del proyecto y usar `origin/main` como rama
+  canónica, sin reescrituras ni pushes forzados.
+- Usar `main` como rama por defecto y crear tags únicamente sobre commits
+  revisados del historial canónico.
+- Verificar el remoto y su estado antes de cada primera publicación desde una
+  copia de trabajo nueva.
 - Repetir sobre el commit definitivo las comprobaciones de secretos, rutas
   privadas, binarios, PHP, Bash, JSON y Compose.
 - Mantener la allowlist y `.gitignore` como frontera explícita entre contenido
@@ -96,8 +96,11 @@ recursos disponibles.
   secundarios.
 - War Room empaquetado con Dockerfile, Compose, configuración y datos de
   ejemplo saneados.
-- Exportación limpia del índice validada sin dependencias del árbol operativo.
+- Exportación temporal de la allowlist validada sin dependencias de contenido
+  privado o ignorado.
+- Historial local y commit público previo integrados sin reescritura ni force
+  push; `origin/main` queda como referencia canónica.
 
-La validación post-commit desde una clonación Git real y el resto de controles
-de publicación se mantienen en `PRE_PUBLISH_CHECKLIST.md`; no se replican como
-tareas activas en este roadmap.
+La validación desde una clonación Git real y el resto de controles previos a
+cada push se mantienen en `PRE_PUBLISH_CHECKLIST.md`; no se replican como tareas
+activas en este roadmap.

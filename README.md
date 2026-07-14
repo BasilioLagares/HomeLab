@@ -5,9 +5,9 @@ observabilidad local, copias de seguridad y recuperación. El componente propio
 principal es **War Room**, un panel PHP/JavaScript de solo lectura que consume
 estado revisado sin montar el socket de Docker ni ejecutar comandos del host.
 
-> **Estado de publicación:** snapshot público `v0.1` preparado localmente para
-> su exportación a un repositorio separado. Las comprobaciones de publicación
-> pendientes están en
+> **Estado de publicación:** el contenido público `v0.1` está integrado en la
+> rama canónica `main`. Las comprobaciones aplicables antes de cada publicación
+> están en
 > [PRE_PUBLISH_CHECKLIST.md](PRE_PUBLISH_CHECKLIST.md).
 
 ![Concepto visual de War Room](platform/war-room/public/assets/warroomconcepto.png)
@@ -123,9 +123,10 @@ El repositorio adopta exclusión por defecto. Nunca deben publicarse:
 - dumps SQL, bases de datos, backups, logs o estado runtime;
 - paquetes de recuperación, ya que pueden incluir el árbol local completo.
 
-La auditoría encontró este material en el árbol local, pero no rastreado. El
-repositorio público se crea desde un snapshot curado separado y no publica el
-historial del árbol operativo. Las comprobaciones ejecutables están en
+La auditoría encontró este material en el árbol local, pero no rastreado. Este
+repositorio conserva la historia real del proyecto; cada commit destinado a
+`origin/main` debe respetar la allowlist y las exclusiones de seguridad. Las
+comprobaciones ejecutables están en
 [PRE_PUBLISH_CHECKLIST.md](PRE_PUBLISH_CHECKLIST.md).
 
 Para comunicar una vulnerabilidad, consulta la
