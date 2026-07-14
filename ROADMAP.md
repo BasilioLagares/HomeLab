@@ -21,31 +21,6 @@ representar esta información, pero no deben mantener roadmaps independientes.
 
 ## Tareas activas
 
-### 5. Revisar Git y la seguridad del repositorio
-
-- Conservar el historial real del proyecto y usar `origin/main` como rama
-  canónica, sin reescrituras ni pushes forzados.
-- Usar `main` como rama por defecto y crear tags únicamente sobre commits
-  revisados del historial canónico.
-- Verificar el remoto y su estado antes de cada primera publicación desde una
-  copia de trabajo nueva.
-- Repetir sobre el commit definitivo las comprobaciones de secretos, rutas
-  privadas, binarios, PHP, Bash, JSON y Compose.
-- Mantener la allowlist y `.gitignore` como frontera explícita entre contenido
-  público y entorno operativo.
-- Mantener `SECURITY.md` como política pública mínima para comunicar problemas
-  de seguridad.
-
-### 6. SEO y exposición pública controlada
-
-- Decidir si se expone únicamente el repositorio o también una demo.
-- Preparar descripción, topics, portada y capturas saneadas para portfolio.
-- Separar de forma visible la demostración pública de la infraestructura
-  privada.
-- No exponer War Room a Internet sin autenticación, restricción de red y
-  cabeceras revisadas.
-- Definir qué información puede indexarse y qué debe permanecer local.
-
 ### 7. Terminal de órdenes
 
 - Diseñarla como componente separado de la War Room read-only.
@@ -100,6 +75,11 @@ recursos disponibles.
   privado o ignorado.
 - Historial local y commit público previo integrados sin reescritura ni force
   push; `origin/main` queda como referencia canónica.
+- Git y seguridad del repositorio cerrados para `v0.1.0`: rama `main`, tag
+  anotado, política pública y publicación normal sin reescritura.
+- SEO y exposición pública cerrados para `v0.1.0`: portada orientada a portfolio,
+  alcance público y privado diferenciados, imagen conceptual relegada y War Room
+  limitado a ejecución local sin demo online.
 
 La validación desde una clonación Git real y el resto de controles previos a
 cada push se mantienen en `PRE_PUBLISH_CHECKLIST.md`; no se replican como tareas

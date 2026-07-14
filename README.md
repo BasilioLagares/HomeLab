@@ -1,19 +1,18 @@
-# HomeLab
+# HomeLab — War Room y operación local segura
 
 Laboratorio doméstico basado en Docker Compose para practicar operación segura,
 observabilidad local, copias de seguridad y recuperación. El componente propio
 principal es **War Room**, un panel PHP/JavaScript de solo lectura que consume
 estado revisado sin montar el socket de Docker ni ejecutar comandos del host.
 
-> **Estado de publicación:** el contenido público `v0.1` está integrado en la
+> **Estado de publicación:** la versión `v0.1.0` está integrada en la
 > rama canónica `main`. Las comprobaciones aplicables antes de cada publicación
 > están en
 > [PRE_PUBLISH_CHECKLIST.md](PRE_PUBLISH_CHECKLIST.md).
 
-![Concepto visual de War Room](platform/war-room/public/assets/warroomconcepto.png)
-
-_Referencia visual conceptual. Las cifras, servicios y eventos de esta imagen
-no representan telemetría implementada._
+**Navegación:** [arquitectura](ARCHITECTURE.md) ·
+[ejecutar War Room](platform/war-room/README.md#configuración-de-ejemplo) ·
+[roadmap](ROADMAP.md) · [seguridad](SECURITY.md)
 
 ## Qué demuestra el proyecto
 
@@ -33,20 +32,31 @@ no representan telemetría implementada._
 
 | Área | Estado | Evidencia en el repositorio |
 | --- | --- | --- |
-| War Room read-only | Implemented | UI y API bajo `platform/war-room/public/` |
-| Salud, servicios y recursos | Implemented | Endpoints PHP y extensión cURL integrada en la imagen de War Room |
-| Estado de contenedores | Implemented | Exportador Bash y consumo de JSON runtime con control de caducidad |
-| Manuales y checklist | Implemented | Lectura desde mounts read-only con allowlist y filtrado de campos |
-| Backups MariaDB/Uptime Kuma | Implemented locally | El snapshot incluye plantillas saneadas; scripts, pruebas y backups operativos permanecen privados |
-| Actualización de stack | Implemented locally | El snapshot incluye una plantilla con dry-run; el script ligado al host permanece privado |
-| Caddy, dnsmasq, WireGuard y stack MVP | Implemented locally | Configuración local ignorada; no forman parte del snapshot reproducible |
-| Terminal de órdenes | Active Design | Componente separado; War Room permanece deliberadamente read-only |
-| SEO y exposición pública | Active Planning | Alcance y controles de exposición pendientes de decisión |
-| Chatbot e IA interna | Future Idea | No forman parte de las tareas activas ni tienen implementación comprometida |
+| War Room read-only | Implementado | UI y API bajo `platform/war-room/public/` |
+| Salud, servicios y recursos | Implementado | Endpoints PHP y extensión cURL integrada en la imagen de War Room |
+| Estado de contenedores | Implementado | Exportador Bash y consumo de JSON runtime con control de caducidad |
+| Manuales y checklist | Implementado | Lectura desde mounts read-only con allowlist y filtrado de campos |
+| Backups MariaDB/Uptime Kuma | Implementado en local | El snapshot incluye plantillas saneadas; scripts, pruebas y backups operativos permanecen privados |
+| Actualización de stack | Implementado en local | El snapshot incluye una plantilla con dry-run; el script ligado al host permanece privado |
+| Caddy, dnsmasq, WireGuard y stack MVP | Implementado en local | Configuración local ignorada; no forman parte del snapshot reproducible |
 
 El estado de los contenedores del laboratorio cambia con el entorno y no forma
 parte del snapshot público. La tabla distingue expresamente entre lo demostrable
 desde una clonación y lo implementado únicamente en la instalación privada.
+
+No hay una instancia pública de War Room. El Compose de ejemplo publica el panel
+solo en `127.0.0.1` por defecto; exponerlo fuera del equipo local requiere una
+decisión de seguridad independiente.
+
+<details>
+<summary>Ver referencia visual conceptual</summary>
+
+![Concepto visual de War Room](platform/war-room/public/assets/warroomconcepto.png)
+
+Esta imagen es una referencia de diseño, no una captura del panel implementado.
+Las cifras, servicios y eventos que muestra no representan telemetría real.
+
+</details>
 
 ## Arquitectura resumida
 
@@ -123,10 +133,10 @@ El repositorio adopta exclusión por defecto. Nunca deben publicarse:
 - dumps SQL, bases de datos, backups, logs o estado runtime;
 - paquetes de recuperación, ya que pueden incluir el árbol local completo.
 
-La auditoría encontró este material en el árbol local, pero no rastreado. Este
-repositorio conserva la historia real del proyecto; cada commit destinado a
-`origin/main` debe respetar la allowlist y las exclusiones de seguridad. Las
-comprobaciones ejecutables están en
+El entorno privado contiene material operativo que permanece ignorado y fuera
+del contenido público. Este repositorio conserva la historia real del proyecto;
+cada commit destinado a `origin/main` debe respetar la allowlist y las
+exclusiones de seguridad. Las comprobaciones ejecutables están en
 [PRE_PUBLISH_CHECKLIST.md](PRE_PUBLISH_CHECKLIST.md).
 
 Para comunicar una vulnerabilidad, consulta la

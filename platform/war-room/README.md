@@ -7,6 +7,11 @@ panel de control con acciones destructivas o cambios sobre la infraestructura.
 La aplicación está diseñada como una interfaz de solo lectura. No debe montar el
 socket de Docker, no debe ejecutar comandos del host y no debe exponer secretos.
 
+Este repositorio no publica una instancia online de War Room. El Compose de
+ejemplo enlaza el servicio a `127.0.0.1` por defecto y usa nombres, URLs y datos
+saneados. La topología, las credenciales y la configuración del despliegue real
+permanecen fuera de Git.
+
 ## Estado actual
 
 Estado funcional: panel web local con API v1 de solo lectura.
