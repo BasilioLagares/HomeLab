@@ -8,7 +8,8 @@ revisión final del snapshot exacto que se vaya a publicar.
 
 ## Bloqueos actuales
 
-- [x] Definir `PUBLIC_V0.1_MANIFEST.txt` como allowlist exacta del snapshot.
+- [x] Mantener `PUBLIC_V0.1_MANIFEST.txt` como allowlist exacta de la rama
+  pública canónica; cada tag conserva su copia histórica.
 - [x] Validar el contenido preparado desde un directorio limpio, no desde el
   árbol operativo que contiene secretos y backups ignorados.
 - [x] Decidir si los nombres de aplicaciones/personas y subdominios internos se

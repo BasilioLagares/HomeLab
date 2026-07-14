@@ -1,4 +1,5 @@
-# Exact allow-list for the public v0.1 snapshot.
+# Exact tracked-file allow-list for the canonical public branch.
+# Initialized for v0.1.0; tagged releases preserve their historical copy.
 # Paths not listed here must not be copied to the public repository.
 
 .env.example
@@ -16,6 +17,7 @@ docs/manuals/backups.md
 docs/manuals/caddy-dns.md
 docs/manuals/git-seguro.md
 docs/manuals/recuperacion-war-room.md
+docs/manuals/terminal-ordenes.md
 docs/manuals/war-room.md
 docs/manuals/wireguard.md
 platform/war-room/README.md

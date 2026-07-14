@@ -20,9 +20,13 @@ seguros, revisables y versionables sin incluir datos privados del entorno real.
   para crear y restaurar copias.
 - [Recuperación de War Room](recuperacion-war-room.md): diagnóstico seguro si la
   War Room no carga o sus APIs no responden.
+- [Consola de operaciones catalogadas](terminal-ordenes.md): diseño de seguridad
+  y contrato del futuro MVP diagnóstico, todavía sin implementación.
 
 Todos los manuales de esta carpeta están pensados para consulta read-only desde
 la War Room. Deben mantenerse saneados y libres de configuración privada.
+El lector de War Room mantiene su propia allowlist; añadir un manual al
+repositorio no lo habilita automáticamente en la interfaz.
 
 ## Política de seguridad documental
 

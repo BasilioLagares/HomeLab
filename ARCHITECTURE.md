@@ -198,9 +198,10 @@ versiones.
 └── LICENSE
 ```
 
-`PUBLIC_V0.1_MANIFEST.txt` contiene la lista exacta de ficheros. Directorios no
-representados en esta vista permanecen fuera del snapshot aunque existan en el
-árbol operativo.
+`PUBLIC_V0.1_MANIFEST.txt` contiene la lista exacta de ficheros rastreados en la
+rama pública canónica. El tag `v0.1.0` conserva su copia histórica del
+manifiesto. Directorios no representados en esta vista permanecen fuera del
+contenido público aunque existan en el árbol operativo.
 
 ## 8. Separación entre snapshot y entorno operativo
 

@@ -157,5 +157,6 @@ El estado actual y las siguientes versiones están separados en
 [ROADMAP.md](ROADMAP.md). No se atribuye a la versión actual ninguna capacidad
 que solo figure como idea o tarea futura.
 
-La allowlist exacta del primer snapshot público está en
-[PUBLIC_V0.1_MANIFEST.txt](PUBLIC_V0.1_MANIFEST.txt).
+La allowlist exacta del contenido rastreado en la rama pública canónica está en
+[PUBLIC_V0.1_MANIFEST.txt](PUBLIC_V0.1_MANIFEST.txt). El tag `v0.1.0` conserva
+la copia histórica correspondiente a esa versión.
