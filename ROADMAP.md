@@ -4,6 +4,17 @@ Este documento es la fuente canónica única de la planificación de HomeLab.
 `README.md`, los manuales, War Room y los ficheros de estado pueden resumir o
 representar esta información, pero no deben mantener roadmaps independientes.
 
+## Reglas de sincronización
+
+- Las decisiones de alcance y estado se realizan únicamente en este documento.
+- `state/homelab_tasks.json` y `state/homelab_tasks.example.json` son copias
+  equivalentes de la proyección operativa: solo contienen tareas activas e ideas
+  futuras que pertenecen a HomeLab.
+- War Room consume esa proyección en modo read-only; no define tareas, estados,
+  prioridades ni contadores propios.
+- El trabajo completado y los elementos de otros proyectos se documentan aquí,
+  pero no se exportan al JSON operativo.
+
 ## Estado actual
 
 - El trabajo de cierre del contenido público `v0.1` se considera cerrado a nivel
@@ -21,37 +32,36 @@ representar esta información, pero no deben mantener roadmaps independientes.
 
 ## Tareas activas
 
-### 7. Terminal de órdenes
-
-- Diseñarla como componente separado de la War Room read-only.
-- Definir una allowlist cerrada de órdenes; no admitir shell arbitraria.
-- Diseñar autenticación, autorización, confirmaciones y registro de auditoría
-  antes de implementar ejecución.
-- Mantener secretos y acceso directo a `docker.sock` fuera del componente web.
-- Separar claramente órdenes diagnósticas de acciones que modifican estado.
-
-La terminal de órdenes no es un chatbot, una función de IA ni un cambio del
-modelo de seguridad actual de War Room. Cualquier implementación requiere una
-decisión arquitectónica explícita.
+No hay tareas activas. No está autorizada la implementación de nuevas
+funcionalidades en esta fase.
 
 ## Ideas futuras
 
-### 8. Chatbot o IA interna de HomeLab
+### Consola de operaciones catalogadas (implementación aplazada)
 
-Idea futura para consultar documentación o información previamente saneada. No
-es una tarea activa y no debe tener acceso a secretos, runtime sensible ni
-ejecución de órdenes.
+- ID operativo: `command-terminal`.
+- Estado operativo: `later`.
+- Prioridad: `high`.
+- La posible implementación del MVP diagnóstico queda aplazada. El diseño de
+  seguridad ya está completado en `docs/manuals/terminal-ordenes.md`.
+- Debe seguir siendo un componente CLI separado de War Room, sin shell
+  arbitraria, `docker.sock` ni operaciones que modifiquen estado.
 
-### 9. Asistente de voz tipo Jarvis para Linux
+### Chatbot o IA interna de HomeLab
+
+- ID operativo: `homelab-internal-chatbot`.
+- Estado operativo: `later`.
+- Prioridad: `medium`.
+- Idea futura para consultar documentación o información previamente saneada.
+- No debe tener acceso a secretos, runtime sensible ni ejecución de órdenes.
+
+## Otros proyectos
+
+### Asistente de voz tipo Jarvis para Linux
 
 Idea externa para Linux general. No pertenece al alcance de HomeLab y, si se
-desarrolla, debe gestionarse como un proyecto separado.
-
-### 10. IA local integrada en HomeLab
-
-Idea aparcada y no viable por ahora. No es una tarea, una dependencia ni un
-compromiso de versión; solo puede reevaluarse si cambian los requisitos y los
-recursos disponibles.
+desarrolla, debe gestionarse en un repositorio y backlog separados. No se
+exporta a la proyección operativa de HomeLab.
 
 ## Trabajo completado resumido
 
@@ -80,6 +90,9 @@ recursos disponibles.
 - SEO y exposición pública cerrados para `v0.1.0`: portada orientada a portfolio,
   alcance público y privado diferenciados, imagen conceptual relegada y War Room
   limitado a ejecución local sin demo online.
+- Diseño de seguridad de la consola de operaciones catalogadas completado:
+  alcance diagnóstico, catálogo cerrado, autorización, auditoría, límites y
+  separación estricta de War Room documentados sin implementar la consola.
 
 La validación desde una clonación Git real y el resto de controles previos a
 cada push se mantienen en `PRE_PUBLISH_CHECKLIST.md`; no se replican como tareas

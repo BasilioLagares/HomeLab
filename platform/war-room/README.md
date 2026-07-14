@@ -24,8 +24,8 @@ Capacidades actuales:
 - Lectura de métricas visibles desde el contenedor.
 - Lectura opcional de estado de contenedores desde un fichero runtime generado
   fuera de la aplicación.
-- Lectura opcional de checklist/tareas desde un fichero de estado montado en
-  solo lectura.
+- Lectura opcional de la proyección operativa de `ROADMAP.md` desde un fichero
+  de estado montado en solo lectura.
 
 Limitaciones actuales:
 
@@ -42,7 +42,7 @@ Componentes:
 - `public/index.php`: entrada principal del panel.
 - `public/assets/`: JavaScript, CSS e imágenes del frontend.
 - `public/api/v1/`: endpoints JSON de solo lectura.
-- `state` montado en solo lectura: checklist o tareas revisadas manualmente.
+- `state` montado en solo lectura: proyección operativa del roadmap.
 - `runtime` montado en solo lectura: datos generados por exportadores externos.
 
 Principios:
@@ -86,7 +86,8 @@ verifica durante el build que la extensión puede cargarse.
 Mounts esperados:
 
 - `./public:/var/www/html:ro`: código público de War Room.
-- `../../state:/var/warroom-state:ro`: checklist/tareas revisadas, opcional.
+- `../../state:/var/warroom-state:ro`: proyección operativa del roadmap,
+  opcional.
 - `../../runtime/war-room:/var/warroom-runtime:ro`: datos runtime generados por
   exportadores externos, opcional.
 
@@ -141,9 +142,11 @@ Usar ficheros `.example` para documentar configuración versionable.
 
 ## Planificación
 
-El roadmap canónico del proyecto está en [`ROADMAP.md`](../../ROADMAP.md). Este
-README documenta el componente y no mantiene una lista de tareas independiente.
+El roadmap canónico del proyecto está en [`ROADMAP.md`](../../ROADMAP.md). El
+JSON consumido por `tasks.php` es únicamente su proyección de tareas activas e
+ideas futuras; este README y War Room no mantienen listas independientes.
 
-War Room permanece como consumidor read-only. La terminal de órdenes definida
-en el roadmap se diseña como componente separado y no convierte esta API en un
-ejecutor de shell, Docker o tareas administrativas.
+War Room permanece como consumidor read-only. El diseño de la consola de
+operaciones ya está documentado como componente separado; su posible
+implementación futura no convierte esta API en un ejecutor de shell, Docker o
+tareas administrativas.

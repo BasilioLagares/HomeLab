@@ -324,11 +324,11 @@ $systemStats = [
             </section>
 
             <section class="panel-card pending-panel" data-task-panel>
-                <h2>Checklist</h2>
-                <p class="tasks-error" data-task-error hidden>No se pudo cargar la checklist dinámica</p>
+                <h2>Planificación</h2>
+                <p class="tasks-error" data-task-error hidden>No se pudo cargar la proyección del roadmap</p>
                 <ul class="pending-list" data-pending-list>
                     <li class="tasks-loading">
-                        <span>Cargando checklist dinámica</span>
+                        <span>Cargando proyección del roadmap</span>
                         <span class="badge badge-pending">PENDIENTE</span>
                     </li>
                 </ul>

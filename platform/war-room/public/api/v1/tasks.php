@@ -96,22 +96,58 @@ if (!isset($decoded['blocks']) || !is_array($decoded['blocks'])) {
     publicTaskError('invalid_tasks_schema');
 }
 
-$allowedStatuses = ['pending', 'doing', 'done', 'blocked', 'later'];
+if (($decoded['source'] ?? null) !== 'ROADMAP.md'
+    || !array_key_exists('canonical', $decoded)
+    || $decoded['canonical'] !== false
+) {
+    publicTaskError('invalid_tasks_projection');
+}
+
+if (!isset($decoded['version']) || !is_string($decoded['version']) || trim($decoded['version']) === '') {
+    publicTaskError('invalid_tasks_schema');
+}
+
+$allowedBlockStatuses = [
+    'active' => ['pending', 'doing', 'blocked'],
+    'future' => ['later'],
+];
 $allowedPriorities = ['high', 'medium', 'low'];
 $blocks = [];
+$seenBlocks = [];
+$seenItems = [];
 
 foreach ($decoded['blocks'] as $block) {
     if (!is_array($block)) {
         publicTaskError('invalid_tasks_schema');
     }
 
-    $blocks[] = sanitizeTaskBlock($block, $allowedStatuses, $allowedPriorities);
+    $blockId = $block['id'] ?? null;
+    if (!is_string($blockId) || !array_key_exists($blockId, $allowedBlockStatuses) || isset($seenBlocks[$blockId])) {
+        publicTaskError('invalid_tasks_projection');
+    }
+
+    $sanitizedBlock = sanitizeTaskBlock($block, $allowedBlockStatuses[$blockId], $allowedPriorities);
+    foreach ($sanitizedBlock['items'] as $item) {
+        if (isset($seenItems[$item['id']])) {
+            publicTaskError('invalid_tasks_projection');
+        }
+        $seenItems[$item['id']] = true;
+    }
+
+    $seenBlocks[$blockId] = true;
+    $blocks[] = $sanitizedBlock;
+}
+
+if (array_diff(array_keys($allowedBlockStatuses), array_keys($seenBlocks)) !== []) {
+    publicTaskError('invalid_tasks_projection');
 }
 
 jsonResponse([
     'ok' => true,
     'data' => [
-        'version' => is_string($decoded['version'] ?? null) ? $decoded['version'] : '0.5',
+        'version' => $decoded['version'],
+        'source' => 'ROADMAP.md',
+        'canonical' => false,
         'last_update' => nowIso(),
         'blocks' => $blocks,
     ],

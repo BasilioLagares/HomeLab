@@ -207,7 +207,7 @@
 
             blockLi.className = 'task-block';
             title.className = 'task-block-title';
-            title.textContent = block.title || 'Checklist';
+            title.textContent = block.title || 'Planificación';
             blockLi.appendChild(title);
             list.appendChild(blockLi);
 

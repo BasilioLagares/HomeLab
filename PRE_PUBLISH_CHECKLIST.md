@@ -93,7 +93,8 @@ No usar `git add .` en el árbol operativo.
 - [x] Evitar etiquetas `latest` en los artefactos ejecutables públicos; la
   imagen base de War Room está fijada por digest.
 - [x] Publicar `state/homelab_tasks.example.json`; mantener
-  `state/homelab_tasks.json` como estado operativo privado.
+  `state/homelab_tasks.json` como copia operativa privada y equivalente de la
+  proyección definida en `ROADMAP.md`.
 - [ ] Crear Compose saneados para proxy, DNS, VPN y stack MVP si se presentan
   como parte reproducible.
 - [ ] Probar desde clonación nueva, sin depender de `/home/<usuario>/HomeLab`.
@@ -120,8 +121,9 @@ No usar `git add .` en el árbol operativo.
 - [x] README diferencia implementación, limitaciones, trabajo activo e ideas
   futuras.
 - [x] Arquitectura separa contenido versionado y configuración local.
-- [x] Roadmap separa estado actual, tareas activas, ideas futuras y trabajo
-  completado.
+- [x] Roadmap separa estado actual, tareas activas, ideas futuras, otros
+  proyectos y trabajo completado; el JSON solo proyecta tareas activas y
+  futuras de HomeLab.
 - [x] La imagen conceptual está identificada como no real.
 - [ ] Añadir capturas del estado real solo después de sanear nombres, URLs,
   horas, topología y contenido de los paneles.

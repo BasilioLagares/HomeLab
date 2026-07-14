@@ -45,7 +45,7 @@ jsonResponse([
                     ['label' => 'docs/manuals', 'state' => 'mounted_read_only'],
                     ['label' => 'Lector online', 'state' => 'available'],
                     ['label' => 'Docs históricos internos', 'state' => 'local_no_versioned'],
-                    ['label' => 'Checklist HomeLab', 'state' => 'updated'],
+                    ['label' => 'Proyección operativa del roadmap', 'state' => 'available'],
                 ],
             ],
             [
@@ -66,8 +66,8 @@ jsonResponse([
                 'summary' => 'ROADMAP.md es la única fuente canónica del roadmap.',
                 'items' => [
                     ['label' => 'ROADMAP.md canónico', 'state' => 'updated'],
-                    ['label' => '3 bloques activos', 'state' => 'available'],
-                    ['label' => '3 ideas futuras separadas', 'state' => 'available'],
+                    ['label' => 'JSON como proyección no canónica', 'state' => 'available'],
+                    ['label' => 'Backlog propio de War Room', 'state' => 'disabled'],
                     ['label' => 'Ejecución desde War Room', 'state' => 'disabled'],
                 ],
             ],

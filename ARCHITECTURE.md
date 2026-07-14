@@ -28,7 +28,8 @@ flowchart TB
 
     HostExporter[export-docker-status.sh] --> Runtime[docker-status.json]
     Runtime -->|solo lectura| WarRoom
-    Tasks[state/homelab_tasks.json] -->|solo lectura| WarRoom
+    Roadmap[ROADMAP.md\nfuente canónica] --> Projection[state/homelab_tasks.json\nproyección operativa]
+    Projection -->|solo lectura| WarRoom
     Manuals[docs/manuals] -->|solo lectura| WarRoom
 ```
 
@@ -57,7 +58,7 @@ Endpoints implementados:
 | `services.php` | Definiciones internas y HTTP | Estado y latencia; depende de PHP cURL |
 | `resources.php` | `/proc` y filesystem del contenedor | CPU estimada, memoria y disco visibles desde el contenedor, no necesariamente del host |
 | `containers.php` | `/var/warroom-runtime/docker-status.json` | Inventario filtrado y detección de datos stale a los 45 segundos |
-| `tasks.php` | Mount de estado o copia del repositorio | Valida esquema, estados y prioridades antes de responder |
+| `tasks.php` | Proyección JSON de `ROADMAP.md` | Valida origen, bloques, estados y prioridades antes de responder |
 | `manuals.php` | `docs/manuals` montado | Allowlist fija y lectura Markdown sin traversal |
 | `operations.php` | Datos estáticos revisados | Diagnóstico informativo; no ejecuta operaciones |
 
@@ -126,7 +127,7 @@ deben parametrizarse en los ejemplos públicos.
 
 ```text
 Zona versionada y revisable
-  War Room, scripts saneados, plantillas, manuales, checklist
+  War Room, scripts saneados, plantillas, manuales, roadmap y su proyección
 
 Zona local de configuración
   Compose reales, Caddyfile, dnsmasq, .env, configuración WireGuard

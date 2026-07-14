@@ -19,7 +19,7 @@ La War Room funciona en modo read-only:
 
 - Frontend: interfaz web estática/dinámica para consultar estado.
 - API v1: endpoints JSON bajo `public/api/v1/`.
-- Estado revisado: ficheros de checklist o tareas sin secretos.
+- Planificación: proyección operativa de `ROADMAP.md` sin secretos.
 - Runtime externo: datos generados por exportadores fuera de la aplicación.
 - Proxy local: capa de acceso gestionada fuera de la War Room.
 
@@ -36,7 +36,7 @@ Endpoints disponibles a alto nivel:
 - `GET /api/v1/services.php`: listado de servicios definidos por la aplicación.
 - `GET /api/v1/resources.php`: métricas visibles desde el contenedor.
 - `GET /api/v1/containers.php`: estado leído desde runtime externo si existe.
-- `GET /api/v1/tasks.php`: checklist o tareas saneadas si están disponibles.
+- `GET /api/v1/tasks.php`: proyección del roadmap si está disponible.
 
 La API debe devolver JSON, evitar caché para datos dinámicos y filtrar cualquier
 dato externo antes de mostrarlo en el frontend.
@@ -82,10 +82,10 @@ Antes de cambiar War Room:
 ## Planificación
 
 La fuente canónica de tareas activas e ideas futuras es
-[`ROADMAP.md`](../../ROADMAP.md). Este manual no mantiene una lista paralela de
-pendientes.
+[`ROADMAP.md`](../../ROADMAP.md). El JSON de estado es solo su proyección
+operativa y este manual no mantiene una lista paralela de pendientes.
 
-War Room continúa siendo un visor read-only. La terminal de órdenes se estudia
-como componente separado, con autenticación, allowlist y auditoría propias. Las
-ideas de chatbot o IA interna permanecen fuera del trabajo activo y no se
-mezclan con la terminal.
+War Room continúa siendo un visor read-only. La consola de operaciones está
+diseñada como componente separado, con autenticación, allowlist y auditoría
+propias; su implementación permanece aplazada. Las ideas de chatbot o IA
+interna permanecen fuera del trabajo activo y no se mezclan con la consola.

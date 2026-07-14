@@ -35,7 +35,7 @@ estado revisado sin montar el socket de Docker ni ejecutar comandos del host.
 | War Room read-only | Implementado | UI y API bajo `platform/war-room/public/` |
 | Salud, servicios y recursos | Implementado | Endpoints PHP y extensión cURL integrada en la imagen de War Room |
 | Estado de contenedores | Implementado | Exportador Bash y consumo de JSON runtime con control de caducidad |
-| Manuales y checklist | Implementado | Lectura desde mounts read-only con allowlist y filtrado de campos |
+| Manuales y planificación | Implementado | Lectura read-only de la proyección operativa de `ROADMAP.md`, con allowlist y filtrado de campos |
 | Backups MariaDB/Uptime Kuma | Implementado en local | El snapshot incluye plantillas saneadas; scripts, pruebas y backups operativos permanecen privados |
 | Actualización de stack | Implementado en local | El snapshot incluye una plantilla con dry-run; el script ligado al host permanece privado |
 | Caddy, dnsmasq, WireGuard y stack MVP | Implementado en local | Configuración local ignorada; no forman parte del snapshot reproducible |
@@ -67,7 +67,7 @@ flowchart LR
     Proxy --> Services[Servicios Docker\nMVP local]
     Exporter[Exportador Bash en host] -->|docker-status.json| Runtime[Runtime ignorado]
     Runtime -->|mount read-only| WarRoom
-    State[Checklist revisada] -->|mount read-only| WarRoom
+    State[Proyección JSON de ROADMAP.md] -->|mount read-only| WarRoom
     Manuals[Manuales saneados] -->|mount read-only| WarRoom
     Scripts[Scripts operativos] --> Docker[Docker Engine]
     Scripts --> Backups[Backups locales ignorados]
@@ -85,7 +85,7 @@ los límites de confianza y la topología completa en
 ├── platform/war-room/       # Aplicación propia y Compose saneado de ejemplo
 ├── scripts/examples/        # Plantillas operativas reutilizables
 ├── tools/war-room/          # Exportador de estado Docker
-├── state/                   # Ejemplo saneado de tareas para War Room
+├── state/                   # Proyección operativa de ejemplo para War Room
 ├── docs/manuals/            # Manuales operativos saneados
 ├── ARCHITECTURE.md
 ├── ROADMAP.md

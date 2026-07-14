@@ -1,27 +1,28 @@
 {
-  "version": "0.1-example",
+  "version": "1.2",
+  "source": "ROADMAP.md",
+  "canonical": false,
   "blocks": [
     {
-      "id": "current",
-      "title": "Current",
-      "items": [
-        {
-          "id": "review-public-config",
-          "title": "Review public configuration",
-          "status": "done",
-          "priority": "high"
-        }
-      ]
+      "id": "active",
+      "title": "Tareas activas de HomeLab",
+      "items": []
     },
     {
-      "id": "planned",
-      "title": "Planned",
+      "id": "future",
+      "title": "Ideas futuras de HomeLab",
       "items": [
         {
-          "id": "validate-clean-clone",
-          "title": "Validate from a clean clone",
-          "status": "pending",
+          "id": "command-terminal",
+          "title": "Consola de operaciones catalogadas (implementación aplazada)",
+          "status": "later",
           "priority": "high"
+        },
+        {
+          "id": "homelab-internal-chatbot",
+          "title": "Chatbot o IA interna de HomeLab",
+          "status": "later",
+          "priority": "medium"
         }
       ]
     }
